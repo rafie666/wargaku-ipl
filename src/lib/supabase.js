@@ -13,7 +13,7 @@ export const supabaseAnonKey = envKey || localKey
 export const isSupabaseConfigured = Boolean(
   supabaseUrl &&
   supabaseAnonKey &&
-  supabaseUrl.startsWith('https://') &&
+  (supabaseUrl.startsWith('https://') || supabaseUrl.startsWith('http://')) &&
   !supabaseUrl.includes('your-project')
 )
 
