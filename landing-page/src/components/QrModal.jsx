@@ -7,8 +7,8 @@ export default function QrModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   const downloadUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/wargaku-ipl-v2.0.0.apk`
-    : 'https://wargaku-ipl.local/wargaku-ipl-v2.0.0.apk';
+    ? `${window.location.origin}/wargaku-ipl.apk`
+    : 'https://wargaku-ipl.local/wargaku-ipl.apk';
 
   const copyUrl = () => {
     navigator.clipboard.writeText(downloadUrl);
@@ -84,10 +84,8 @@ export default function QrModal({ isOpen, onClose }) {
             <rect x="110" y="65" width="8" height="8" fill="#022c22" rx="2" />
             <rect x="130" y="65" width="8" height="8" fill="#059669" rx="2" />
 
-            {/* Center Badge */}
-            <circle cx="80" cy="80" r="16" fill="#ffffff" />
-            <circle cx="80" cy="80" r="12" fill="#059669" />
-            <text x="80" y="85" textAnchor="middle" fill="#D4F636" fontSize="12" fontWeight="bold">W</text>
+            {/* Center Area Dots */}
+            <rect x="72" y="72" width="16" height="16" fill="#022c22" rx="3" />
 
             <circle cx="60" cy="95" r="4" fill="#022c22" />
             <circle cx="75" cy="95" r="4" fill="#059669" />
@@ -137,8 +135,8 @@ export default function QrModal({ isOpen, onClose }) {
         {/* Action button inside modal */}
         <div className="mt-6 flex gap-3">
           <a
-            href="/wargaku-ipl-v2.0.0.apk"
-            download="wargaku-ipl-v2.0.0.apk"
+            href="/wargaku-ipl.apk"
+            download="wargaku-ipl.apk"
             className="flex-1 bg-limeAccent hover:bg-[#c2e22f] text-darkForest font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-xs shadow-sm"
           >
             <Download className="w-4 h-4 text-darkForest" />

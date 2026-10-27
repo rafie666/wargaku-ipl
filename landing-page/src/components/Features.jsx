@@ -112,7 +112,7 @@ export default function Features() {
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-emerald-700 group-hover:text-emerald-800">
-                  <span>Terintegrasi di v2.0.0</span>
+                  <span>Sistem Terintegrasi</span>
                   <CheckCircle className="w-4 h-4 ml-1.5 text-emerald-600" />
                 </div>
               </div>
@@ -138,8 +138,8 @@ export default function Features() {
             </div>
             <div className="lg:col-span-4 flex justify-start lg:justify-end">
               <a
-                href="/wargaku-ipl-v2.0.0.apk"
-                download="wargaku-ipl-v2.0.0.apk"
+                href="/wargaku-ipl.apk"
+                download="wargaku-ipl.apk"
                 className="bg-limeAccent hover:bg-[#c2e22f] text-darkForest font-extrabold text-sm px-6 py-3.5 rounded-2xl shadow-md transition-all flex items-center gap-2 active:scale-95"
               >
                 <span>Unduh Aplikasi Sekarang</span>

@@ -23,36 +23,14 @@ export default function Navbar({ onOpenQr }) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Logo & Brand */}
-          <a href="#" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl overflow-hidden bg-emerald-600 shadow-md flex items-center justify-center p-1 border border-emerald-400/30 group-hover:scale-105 transition-transform">
-              <img
-                src="/app-icon.png"
-                alt="Wargaku IPL Logo"
-                className="w-full h-full object-cover rounded-lg"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = '<span class="text-white font-bold text-lg">W</span>';
-                }}
-              />
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className={`text-xl font-extrabold tracking-tight ${scrolled ? 'text-slate-900' : 'text-white'}`}>
-                  Wargaku<span className="text-emerald-500">IPL</span>
-                </span>
-                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
-                  scrolled 
-                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
-                    : 'bg-emerald-900/80 text-limeAccent border-emerald-700'
-                }`}>
-                  v2.0.0
-                </span>
-              </div>
-              <span className={`text-xs ${scrolled ? 'text-slate-500' : 'text-emerald-200/80'}`}>
-                Sistem Resmi Warga & RT/RW
-              </span>
-            </div>
+          {/* Brand */}
+          <a href="#" className="flex flex-col group">
+            <span className={`text-xl font-extrabold tracking-tight ${scrolled ? 'text-slate-900' : 'text-white'}`}>
+              Wargaku<span className="text-emerald-500">IPL</span>
+            </span>
+            <span className={`text-xs ${scrolled ? 'text-slate-500' : 'text-emerald-200/80'}`}>
+              Sistem Resmi Warga & RT/RW
+            </span>
           </a>
 
           {/* Desktop Nav Links */}
@@ -107,8 +85,8 @@ export default function Navbar({ onOpenQr }) {
             </button>
 
             <a
-              href="/wargaku-ipl-v2.0.0.apk"
-              download="wargaku-ipl-v2.0.0.apk"
+              href="/wargaku-ipl.apk"
+              download="wargaku-ipl.apk"
               className="bg-limeAccent hover:bg-[#c2e22f] text-darkForest text-xs font-bold px-4 py-2 rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-2 active:scale-95"
             >
               <Download className="w-3.5 h-3.5 text-darkForest" />
@@ -119,8 +97,8 @@ export default function Navbar({ onOpenQr }) {
           {/* Mobile Menu Toggle Button */}
           <div className="md:hidden flex items-center gap-2">
             <a
-              href="/wargaku-ipl-v2.0.0.apk"
-              download="wargaku-ipl-v2.0.0.apk"
+              href="/wargaku-ipl.apk"
+              download="wargaku-ipl.apk"
               className="bg-limeAccent text-darkForest text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm"
             >
               <Download className="w-3.5 h-3.5" />
@@ -179,12 +157,12 @@ export default function Navbar({ onOpenQr }) {
 
             <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
               <a
-                href="/wargaku-ipl-v2.0.0.apk"
-                download="wargaku-ipl-v2.0.0.apk"
+                href="/wargaku-ipl.apk"
+                download="wargaku-ipl.apk"
                 className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-center flex items-center justify-center gap-2 shadow-sm"
               >
                 <Download className="w-4 h-4" />
-                Unduh APK Android (v2.0.0)
+                Unduh APK Android
               </a>
               <button
                 onClick={() => {

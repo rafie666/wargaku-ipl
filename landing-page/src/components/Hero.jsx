@@ -20,9 +20,6 @@ export default function Hero({ onOpenQr }) {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-900/90 border border-emerald-500/30 text-emerald-200 text-xs sm:text-sm font-medium backdrop-blur-sm shadow-inner">
               <span className="w-2 h-2 rounded-full bg-limeAccent animate-pulse" />
               <span>Aplikasi Resmi Warga RT / RW Lingkungan</span>
-              <span className="bg-limeAccent text-darkForest text-[10px] font-extrabold px-1.5 py-0.5 rounded">
-                v2.0.0
-              </span>
             </div>
 
             {/* Main Headline */}
@@ -43,8 +40,8 @@ export default function Hero({ onOpenQr }) {
             {/* Download CTA Group */}
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <a
-                href="/wargaku-ipl-v2.0.0.apk"
-                download="wargaku-ipl-v2.0.0.apk"
+                href="/wargaku-ipl.apk"
+                download="wargaku-ipl.apk"
                 className="w-full sm:w-auto bg-limeAccent hover:bg-[#c4e62a] active:scale-95 text-darkForest font-extrabold px-6 py-4 rounded-2xl shadow-elevated transition-all flex items-center justify-center gap-3 text-base group"
               >
                 <div className="w-8 h-8 rounded-xl bg-darkForest/10 flex items-center justify-center group-hover:scale-110 transition-transform">

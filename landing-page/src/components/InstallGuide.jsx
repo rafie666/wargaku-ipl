@@ -5,7 +5,7 @@ const STEPS = [
   {
     step: '1',
     title: 'Unduh File APK',
-    desc: 'Tekan tombol "Download APK" di website ini. Tunggu hingga proses unduhan file wargaku-ipl-v2.0.0.apk (~28 MB) selesai.',
+    desc: 'Tekan tombol "Download APK" di website ini. Tunggu hingga proses unduhan file wargaku-ipl.apk (~28 MB) selesai.',
     icon: Download,
     tip: 'Penyimpanan ponsel Anda hanya membutuhkan ruang sekitar ~60 MB.',
   },
@@ -14,7 +14,7 @@ const STEPS = [
     title: 'Buka File Unduhan',
     desc: 'Buka panel notifikasi HP Anda lalu ketuk file yang baru diunduh, atau temukan file di aplikasi File Saya / Pengelola File > Unduhan (Downloads).',
     icon: FolderDown,
-    tip: 'Nama file: wargaku-ipl-v2.0.0.apk',
+    tip: 'Nama file: wargaku-ipl.apk',
   },
   {
     step: '3',
@@ -101,8 +101,8 @@ export default function InstallGuide() {
             </p>
           </div>
           <a
-            href="/wargaku-ipl-v2.0.0.apk"
-            download="wargaku-ipl-v2.0.0.apk"
+            href="/wargaku-ipl.apk"
+            download="wargaku-ipl.apk"
             className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm px-6 py-3 rounded-xl shadow transition-all shrink-0 flex items-center gap-2"
           >
             <Download className="w-4 h-4" />

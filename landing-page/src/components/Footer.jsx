@@ -10,26 +10,10 @@ export default function Footer({ onOpenQr }) {
           
           {/* Col 1 & 2: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center p-1 border border-emerald-400/30">
-                <img
-                  src="/app-icon.png"
-                  alt="Wargaku IPL Logo"
-                  className="w-full h-full object-cover rounded-lg"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.parentElement.innerHTML = '<span class="text-white font-bold text-lg">W</span>';
-                  }}
-                />
-              </div>
-              <div>
-                <span className="text-xl font-black text-white tracking-tight">
-                  Wargaku<span className="text-emerald-500">IPL</span>
-                </span>
-                <span className="ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-900 text-limeAccent border border-emerald-700">
-                  v2.0.0
-                </span>
-              </div>
+            <div>
+              <span className="text-xl font-black text-white tracking-tight">
+                Wargaku<span className="text-emerald-500">IPL</span>
+              </span>
             </div>
 
             <p className="text-xs sm:text-sm text-slate-400 max-w-sm leading-relaxed">
@@ -79,12 +63,12 @@ export default function Footer({ onOpenQr }) {
             <ul className="space-y-2 text-xs">
               <li>
                 <a
-                  href="/wargaku-ipl-v2.0.0.apk"
-                  download="wargaku-ipl-v2.0.0.apk"
+                  href="/wargaku-ipl.apk"
+                  download="wargaku-ipl.apk"
                   className="text-emerald-300 hover:text-limeAccent font-semibold flex items-center gap-1 transition-colors"
                 >
                   <Download className="w-3.5 h-3.5" />
-                  <span>Download APK (v2.0.0)</span>
+                  <span>Download APK</span>
                 </a>
               </li>
               <li>

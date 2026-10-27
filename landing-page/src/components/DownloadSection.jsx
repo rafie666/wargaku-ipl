@@ -31,7 +31,7 @@ export default function DownloadSection({ onOpenQr }) {
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
                 Unduh Wargaku IPL <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-limeAccent to-white">
-                  Versi 2.0.0 Terbaru
+                  Aplikasi Resmi Warga
                 </span>
               </h2>
 
@@ -42,8 +42,8 @@ export default function DownloadSection({ onOpenQr }) {
               {/* Big Download Button */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
                 <a
-                  href="/wargaku-ipl-v2.0.0.apk"
-                  download="wargaku-ipl-v2.0.0.apk"
+                  href="/wargaku-ipl.apk"
+                  download="wargaku-ipl.apk"
                   className="w-full sm:w-auto bg-limeAccent hover:bg-[#c5e729] active:scale-95 text-darkForest font-black px-8 py-4 rounded-2xl shadow-elevated transition-all flex items-center justify-center gap-3 text-base group"
                 >
                   <Download className="w-5 h-5 text-darkForest group-hover:scale-110 transition-transform" />
@@ -62,8 +62,8 @@ export default function DownloadSection({ onOpenQr }) {
               {/* Specs Grid */}
               <div className="pt-6 border-t border-emerald-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
                 <div>
-                  <div className="text-[11px] text-emerald-300">Versi Rilis</div>
-                  <div className="text-sm font-bold font-mono text-white">v2.0.0 (Stable)</div>
+                  <div className="text-[11px] text-emerald-300">Status</div>
+                  <div className="text-sm font-bold text-white">Rilis Stabil</div>
                 </div>
                 <div>
                   <div className="text-[11px] text-emerald-300">Ukuran APK</div>
@@ -167,10 +167,8 @@ export default function DownloadSection({ onOpenQr }) {
                     <rect x="110" y="65" width="8" height="8" fill="#022c22" rx="2" />
                     <rect x="130" y="65" width="8" height="8" fill="#059669" rx="2" />
 
-                    {/* Center App Logo Badge */}
-                    <circle cx="80" cy="80" r="16" fill="#ffffff" />
-                    <circle cx="80" cy="80" r="12" fill="#059669" />
-                    <text x="80" y="85" textAnchor="middle" fill="#D4F636" fontSize="12" fontWeight="bold">W</text>
+                    {/* Center QR Elements */}
+                    <rect x="72" y="72" width="16" height="16" fill="#022c22" rx="3" />
 
                     {/* Lower dots */}
                     <circle cx="60" cy="95" r="4" fill="#022c22" />

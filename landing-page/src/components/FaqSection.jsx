@@ -12,7 +12,7 @@ const FAQS = [
   },
   {
     q: 'Mengapa aplikasi diunduh langsung dalam bentuk file APK, bukan dari Google Play Store?',
-    a: 'Penggunaan APK mandiri memungkinkan pembaruan fitur, perbaikan cepat, dan sinkronisasi kebutuhan lokal lingkungan dapat dilakukan seketika tanpa tertahan antrean verifikasi Play Store. Versi APK ini adalah build produksi resmi (Release APK).',
+    a: 'Penggunaan APK mandiri memungkinkan pembaruan fitur, perbaikan cepat, dan sinkronisasi kebutuhan lokal lingkungan dapat dilakukan seketika tanpa tertahan antrean verifikasi Play Store. File APK ini adalah build produksi resmi (Release APK).',
   },
   {
     q: 'Bagaimana jika ada warga lansia yang kesulitan menggunakan smartphone?',
