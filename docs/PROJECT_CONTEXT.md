@@ -34,6 +34,12 @@ ipl-mobile/ (Root Workspace)
 └── docs/                  # Dokumentasi kontekstual sistem
 ```
 
+### 1.2 Infrastruktur Server & Endpoint Resmi
+- **Web Application:** `warga.glosindo.net.id` → `103.134.221.200:80` (Frontend Web App & Portal)
+- **Backend API:** `api-warga.glosindo.net.id` → `103.134.221.201:8000` (Node.js REST Gateway, PM2 `wargaku-api`)
+- **Database Server:** `103.134.221.200:5432` (PostgreSQL Database `postgres`, multi-tenant per `komplek_id`)
+
+
 ---
 
 ## 2. Arsitektur Aplikasi Mobile (`ipl/`)
