@@ -5,7 +5,7 @@ const STEPS = [
   {
     step: '1',
     title: 'Unduh File APK',
-    desc: 'Tekan tombol "Download APK" di website ini. Tunggu hingga proses unduhan file wargaku-ipl.apk (~28 MB) selesai.',
+    desc: 'Tekan tombol "Download APK" di website ini. Tunggu hingga proses unduhan file wargaku-ipl.apk (~48 MB) selesai.',
     icon: Download,
     tip: 'Penyimpanan ponsel Anda hanya membutuhkan ruang sekitar ~60 MB.',
   },

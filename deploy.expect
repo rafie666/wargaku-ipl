@@ -1,0 +1,64 @@
+#!/usr/bin/expect -f
+# Automated deployment with expect
+set timeout 60
+
+set server_user "adminapi"
+set server_host "103.134.221.201"
+set server_pass "@dminApi2026"
+
+# Upload package
+spawn scp /home/adly/Projects/ipl/backend-rbac-v2.tar.gz ${server_user}@${server_host}:~/
+expect {
+    "password:" {
+        send "${server_pass}\r"
+        exp_continue
+    }
+    "100%" {
+        puts "\n✅ Upload complete"
+    }
+    timeout {
+        puts "\n❌ Upload timeout"
+        exit 1
+    }
+}
+
+# Deploy on server
+spawn ssh ${server_user}@${server_host}
+expect "password:"
+send "${server_pass}\r"
+
+expect "$ "
+send "if \[ -d ~/backend-api \]; then mv ~/backend-api ~/backend-api.backup-\$(date +%Y%m%d-%H%M%S); fi\r"
+expect "$ "
+send "tar -xzf ~/backend-rbac-v2.tar.gz\r"
+expect "$ "
+send "cd ~/backend-api && npm install --production\r"
+expect "$ "
+send "cat > ~/backend-api/.env << 'ENVEOF'\r"
+send "PORT=8000\r"
+send "SERVER_URL=https://api-warga.glosindo.net.id\r"
+send "DB_HOST=103.134.221.200\r"
+send "DB_PORT=5432\r"
+send "DB_USER=adminapp\r"
+send "DB_PASSWORD=@dminAppDb2026\r"
+send "DB_NAME=postgres\r"
+send "JWT_SECRET=wargaku-ipl-production-secret-key-2026-rbac-multitenant\r"
+send "JWT_EXPIRES=30d\r"
+send "ENVEOF\r"
+expect "$ "
+send "cd ~/backend-api && node run-migration.js\r"
+expect "$ "
+send "which pm2 || npm install -g pm2\r"
+expect "$ "
+send "cd ~/backend-api && pm2 stop wargaku-api || true\r"
+expect "$ "
+send "pm2 delete wargaku-api || true\r"
+expect "$ "
+send "pm2 start server.js --name wargaku-api\r"
+expect "$ "
+send "pm2 save\r"
+expect "$ "
+send "sleep 2 && curl http://localhost:8000/health\r"
+expect "$ "
+send "exit\r"
+expect eof

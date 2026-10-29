@@ -18,7 +18,6 @@ function getServerUrl(req) {
 }
 const SERVER_URL = process.env.SERVER_URL || 'https://api-warga.glosindo.net.id';
 
-// 1. PostgreSQL Connection Pool
 const pool = new Pool({
   host: process.env.DB_HOST || '103.134.221.200',
   port: parseInt(process.env.DB_PORT || '5432', 10),
@@ -34,19 +33,16 @@ pool.on('error', (err) => {
   console.error('[DB POOL ERROR]', err.message);
 });
 
-// 2. Middleware
 app.use(cors({ origin: '*' }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Static uploads directory
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 if (!fs.existsSync(UPLOADS_DIR)) {
   fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 }
 app.use('/uploads', express.static(UPLOADS_DIR));
 
-// Multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const bucket = req.body.bucket || req.query.bucket || 'bukti-transfer';
@@ -64,7 +60,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage, limits: { fileSize: 25 * 1024 * 1024 } });
 
-// Allowed tables whitelist for security
 const ALLOWED_TABLES = new Set([
   'wargaku_kompleks',
   'wargaku_config',
@@ -87,7 +82,12 @@ const ALLOWED_TABLES = new Set([
   'wargaku_moota_mutations',
   'wargaku_jadwal_satpam',
   'wargaku_petugas_satpam',
-  'wargaku_admin_auth'
+  'wargaku_admin_auth',
+  'wargaku_rw',
+  'wargaku_rt',
+  'wargaku_residents',
+  'wargaku_emergency_contacts',
+  'wargaku_announcements'
 ]);
 
 function validateTable(tableName) {
@@ -97,29 +97,34 @@ function validateTable(tableName) {
   return tableName;
 }
 
-// 3. Health Endpoint
 app.get('/health', async (req, res) => {
   try {
     const dbRes = await pool.query('SELECT NOW() AS now');
     res.json({
       status: 'ok',
       time: dbRes.rows[0].now,
-      database: 'connected (Server 1)',
-      service: 'wargaku-native-api (Server 2)'
+      database: 'connected',
+      service: 'wargaku-api-rbac-v2.3.0'
     });
   } catch (err) {
     res.status(500).json({ status: 'error', error: err.message });
   }
 });
 
-// 4. Batch Sync Endpoint (loads all initial data in 1 request, scoped by komplek_id if provided)
+const authRoutes = require('./routes/auth');
+const adminKomplekRoutes = require('./routes/adminKomplek');
+const seedRoutes = require('./routes/seed');
+
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminKomplekRoutes);
+app.use('/api/seed', seedRoutes);
+
 app.get('/api/sync', async (req, res) => {
   try {
     const komplekId = req.query.komplek_id;
     const tables = Array.from(ALLOWED_TABLES);
     const queries = tables.map((t) => {
       if (t === 'wargaku_kompleks') {
-        // Kompleks list is always fully returned so client can select/switch complexes
         return pool.query(`SELECT id, data, updated_at FROM public.${t} ORDER BY updated_at DESC`);
       }
       if (komplekId) {
@@ -144,7 +149,6 @@ app.get('/api/sync', async (req, res) => {
   }
 });
 
-// 5. Query Table Data (supports PostgREST style query params or standard + komplek_id)
 app.get('/api/data/:table', async (req, res) => {
   try {
     const tableName = validateTable(req.params.table);
@@ -153,7 +157,6 @@ app.get('/api/data/:table', async (req, res) => {
     let whereClauses = [];
     const params = [];
 
-    // Filter by id
     if (id) {
       if (id.startsWith('eq.')) {
         params.push(id.substring(3));
@@ -168,7 +171,6 @@ app.get('/api/data/:table', async (req, res) => {
       }
     }
 
-    // Filter by komplek_id (supports ?komplek_id=xxx or ?komplek_id=eq.xxx)
     let targetKomplekId = komplek_id;
     if (targetKomplekId && targetKomplekId.startsWith('eq.')) {
       targetKomplekId = targetKomplekId.substring(3);
@@ -198,7 +200,6 @@ app.get('/api/data/:table', async (req, res) => {
   }
 });
 
-// 6. Upsert Data (Single row or Array of rows)
 app.post('/api/data/:table/upsert', async (req, res) => {
   try {
     const tableName = validateTable(req.params.table);
@@ -229,11 +230,9 @@ app.post('/api/data/:table/upsert', async (req, res) => {
 
       const results = [];
       for (const item of items) {
-        // item might be { id, data } or raw item with item.id
         const rowId = item.id || (item.data && item.data.id) || `row-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
         let rowData = item.data !== undefined ? item.data : item;
 
-        // Multi-Tenant Guard: Enforce komplek_id on all tenant tables
         if (tableName !== 'wargaku_kompleks' && typeof rowData === 'object' && rowData !== null) {
           const tenantId = rowData.komplek_id || req.query.komplek_id || req.headers['x-komplek-id'] || 'komplek-permata-bintaro';
           if (!rowData.komplek_id) {
@@ -258,7 +257,6 @@ app.post('/api/data/:table/upsert', async (req, res) => {
   }
 });
 
-// PostgREST compatibility alias: POST /rest/v1/:table or POST /api/data/:table
 app.post('/api/data/:table', async (req, res) => {
   return app._router.handle(
     Object.assign(req, { url: `/api/data/${req.params.table}/upsert` }),
@@ -266,7 +264,6 @@ app.post('/api/data/:table', async (req, res) => {
   );
 });
 
-// 7. Delete Row(s)
 app.delete('/api/data/:table/:id', async (req, res) => {
   try {
     const tableName = validateTable(req.params.table);
@@ -313,7 +310,6 @@ app.delete('/api/data/:table', async (req, res) => {
   }
 });
 
-// 8. Upload File (Base64 or Multipart)
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   try {
     const bucket = req.body.bucket || req.query.bucket || 'bukti-transfer';
@@ -322,7 +318,6 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
       fs.mkdirSync(bucketDir, { recursive: true });
     }
 
-    // A. If uploaded as multipart file
     const currentBaseUrl = getServerUrl(req);
     if (req.file) {
       const publicUrl = `${currentBaseUrl}/uploads/${bucket}/${req.file.filename}`;
@@ -334,7 +329,6 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
       });
     }
 
-    // B. If uploaded as JSON with Base64 payload
     const { base64, path: customPath, contentType } = req.body;
     if (!base64) {
       return res.status(400).json({ success: false, error: 'No file or base64 data provided' });
@@ -362,9 +356,6 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   }
 });
 
-// ==========================================
-// 8.5. EXPO UPDATES (OTA) PROTOCOL V1
-// ==========================================
 const FormData = require('form-data');
 const crypto = require('crypto');
 
@@ -383,7 +374,6 @@ function convertSHA256HashToUUID(value) {
   return `${value.slice(0, 8)}-${value.slice(8, 12)}-${value.slice(12, 16)}-${value.slice(16, 20)}-${value.slice(20, 32)}`;
 }
 
-// Manifest Endpoint for Expo Updates
 app.get('/api/manifest', (req, res) => {
   try {
     const protocolVersion = parseInt(req.headers['expo-protocol-version'] || '1', 10);
@@ -498,7 +488,6 @@ app.get('/api/manifest', (req, res) => {
   }
 });
 
-// Static Asset Server for Expo Updates
 app.get('/api/updates/assets/*', (req, res) => {
   try {
     const relPath = req.params[0];
@@ -524,7 +513,6 @@ app.get('/api/updates/assets/*', (req, res) => {
   }
 });
 
-// 9. Manual Auto-Billing Trigger
 app.post('/api/billing/check', async (req, res) => {
   try {
     const result = await pool.query('SELECT fn_check_and_run_auto_billing() AS summary');
@@ -535,8 +523,6 @@ app.post('/api/billing/check', async (req, res) => {
   }
 });
 
-// 10. Automated Cron: Auto-Billing Asia/Jakarta
-// Runs every hour at minute 5 to ensure new monthly invoices are generated automatically
 cron.schedule('5 * * * *', async () => {
   try {
     console.log('[CRON] Running automatic billing check (Asia/Jakarta)...');
@@ -549,12 +535,12 @@ cron.schedule('5 * * * *', async () => {
   timezone: 'Asia/Jakarta'
 });
 
-// Start Server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`===============================================`);
-  console.log(`🚀 WARGAKU REST API SERVER ONLINE`);
+  console.log(`🚀 WARGAKU REST API SERVER ONLINE (RBAC v2.3.0)`);
   console.log(`📡 URL: http://0.0.0.0:${PORT}`);
   console.log(`🗄️  Connected to DB: ${process.env.DB_HOST || '103.134.221.200'}:5432`);
-  console.log(`⏰ Cron: Auto-billing check hourly Asia/Jakarta`);
+  console.log(`🔐 Auth: JWT + Multi-Tenant Isolation`);
+  console.log(`⏰ Cron: Auto-billing hourly Asia/Jakarta`);
   console.log(`===============================================`);
 });
