@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, ShieldCheck, Heart, MapPin, Mail, Phone, QrCode, ArrowUpRight, CheckCircle2, Sparkles } from 'lucide-react';
+import { Download, ShieldCheck, Heart, QrCode, Sparkles, CheckCircle2, Code2, Terminal } from 'lucide-react';
 
 export default function Footer({ onOpenQr }) {
   return (
@@ -28,8 +28,8 @@ export default function Footer({ onOpenQr }) {
 
           <div className="flex items-center gap-3 shrink-0">
             <a
-              href="/ipl-warga.apk"
-              download="ipl-warga.apk"
+              href="/wargaku-ipl.apk"
+              download="wargaku-ipl.apk"
               className="bg-limeAccent hover:bg-[#c2e22f] active:scale-95 text-darkForest text-xs font-black px-5 py-3 rounded-xl shadow-md transition-all flex items-center gap-2"
             >
               <Download className="w-4 h-4 text-darkForest" />
@@ -45,11 +45,11 @@ export default function Footer({ onOpenQr }) {
           </div>
         </div>
 
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-slate-800/80">
+        {/* Main Content: Brand & Developer Attribution */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-slate-800/80 items-center">
           
-          {/* Brand Info & Mission (Col 1-5) */}
-          <div className="lg:col-span-5 space-y-5">
+          {/* Brand Info & Mission (Col 1-7) */}
+          <div className="md:col-span-7 space-y-4">
             <div className="flex items-center gap-3">
               <img 
                 src="/logo.png" 
@@ -66,95 +66,43 @@ export default function Footer({ onOpenQr }) {
               </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-400 max-w-sm leading-relaxed">
-              Platform digital mandiri untuk pencatatan iuran warga, transparansi kas lingkungan terbuka, kartu identitas virtual penghuni, serta administrasi perumahan, klaster, dan RT/RW se-Indonesia tanpa birokrasi berbelit.
+            <p className="text-xs sm:text-sm text-slate-400 max-w-xl leading-relaxed">
+              Platform mandiri untuk tata kelola iuran lingkungan (IPL), kas terbuka, kartu identitas virtual warga, dan administrasi perumahan, klaster, serta RT/RW se-Indonesia tanpa birokrasi berbelit.
             </p>
 
             <div className="flex flex-wrap items-center gap-2.5 pt-1">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Bebas Iklan & Terverifikasi</span>
+                <span>Bebas Iklan & Open Multi-Tenant</span>
               </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300">
                 <CheckCircle2 className="w-3.5 h-3.5 text-limeAccent" />
-                <span>Transparansi Kas 100%</span>
+                <span>Transparansi Kas 100% Real-Time</span>
               </div>
             </div>
           </div>
 
-          {/* Navigation Links (Col 6-7) */}
-          <div className="lg:col-span-2 space-y-4">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">
-              Navigasi
-            </h4>
-            <ul className="space-y-2.5 text-xs">
-              <li>
-                <a href="#fitur" className="hover:text-emerald-400 transition-colors flex items-center justify-between group">
-                  <span>Fitur Utama</span>
-                  <ArrowUpRight className="w-3 h-3 text-slate-600 group-hover:text-emerald-400 transition-colors" />
-                </a>
-              </li>
-              <li>
-                <a href="#peran" className="hover:text-emerald-400 transition-colors flex items-center justify-between group">
-                  <span>Peran Pengurus</span>
-                  <ArrowUpRight className="w-3 h-3 text-slate-600 group-hover:text-emerald-400 transition-colors" />
-                </a>
-              </li>
-              <li>
-                <a href="#panduan" className="hover:text-emerald-400 transition-colors flex items-center justify-between group">
-                  <span>Panduan Pasang</span>
-                  <ArrowUpRight className="w-3 h-3 text-slate-600 group-hover:text-emerald-400 transition-colors" />
-                </a>
-              </li>
-              <li>
-                <a href="#faq" className="hover:text-emerald-400 transition-colors flex items-center justify-between group">
-                  <span>Tanya Jawab (FAQ)</span>
-                  <ArrowUpRight className="w-3 h-3 text-slate-600 group-hover:text-emerald-400 transition-colors" />
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* App Specs (Col 8-9) */}
-          <div className="lg:col-span-2 space-y-4">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">
-              Aplikasi Android
-            </h4>
-            <div className="space-y-3 text-xs">
-              <div>
-                <span className="text-[11px] text-slate-500 block">Paket Pemasangan</span>
-                <span className="text-slate-300 font-mono">wargaku-ipl.apk</span>
+          {/* Developer Attribution Card (Col 8-12) */}
+          <div className="md:col-span-5 flex justify-start md:justify-end">
+            <div className="w-full sm:w-auto p-5 rounded-2xl bg-gradient-to-br from-slate-900/90 to-emerald-950/40 border border-slate-800 hover:border-emerald-500/30 transition-all shadow-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+                  <Terminal className="w-5 h-5 text-limeAccent" />
+                </div>
+                <div>
+                  <div className="text-[10px] tracking-widest uppercase font-bold text-slate-400 flex items-center gap-1.5">
+                    <Code2 className="w-3 h-3 text-emerald-400" />
+                    <span>Lead Developer</span>
+                  </div>
+                  <div className="text-lg font-black text-white tracking-wide">
+                    adly
+                  </div>
+                </div>
               </div>
-              <div>
-                <span className="text-[11px] text-slate-500 block">Ukuran Berkas</span>
-                <span className="text-slate-300 font-mono">~28.4 MB</span>
-              </div>
-              <div>
-                <span className="text-[11px] text-slate-500 block">Kompatibilitas</span>
-                <span className="text-slate-300">Android 7.0 (Nougat)+</span>
-              </div>
+              <p className="text-xs text-slate-400 mt-2.5 leading-relaxed max-w-xs">
+                Dirancang dan dibangun independen untuk mendemokratisasi digitalisasi tata kelola perumahan dan RT/RW di seluruh Indonesia.
+              </p>
             </div>
-          </div>
-
-          {/* Contact & Secretariat (Col 10-12) */}
-          <div className="lg:col-span-3 space-y-4">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">
-              Sekretariat & Bantuan
-            </h4>
-            <ul className="space-y-3 text-xs">
-              <li className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span className="leading-snug">Pos Keamanan & Balai Warga RT 01 - 05 / RW 08</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Hotline Pengurus Lingkungan</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span className="font-mono text-slate-300">sekretariat@wargaku-ipl.local</span>
-              </li>
-            </ul>
           </div>
 
         </div>
@@ -169,9 +117,9 @@ export default function Footer({ onOpenQr }) {
           </div>
 
           <div className="flex items-center gap-1.5 text-slate-400">
-            <span>Dikelola bersama dengan</span>
+            <span>Dikembangkan dengan</span>
             <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 inline" />
-            <span>untuk kerukunan warga.</span>
+            <span>oleh <strong className="text-white font-semibold">adly</strong> untuk kerukunan warga.</span>
           </div>
         </div>
 

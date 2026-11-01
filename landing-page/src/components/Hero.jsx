@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Smartphone, ShieldCheck, CheckCircle2, ArrowDown, Sparkles, Building2, Users } from 'lucide-react';
+import { Download, Smartphone, ShieldCheck, CheckCircle2, ArrowDown, Sparkles, Globe, ExternalLink } from 'lucide-react';
 import AppMockup from './AppMockup';
 
 export default function Hero({ onOpenQr }) {
@@ -19,7 +19,7 @@ export default function Hero({ onOpenQr }) {
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-900/90 border border-emerald-500/30 text-emerald-200 text-xs sm:text-sm font-medium backdrop-blur-sm shadow-inner">
               <span className="w-2 h-2 rounded-full bg-limeAccent animate-pulse" />
-              <span>Platform Multi-Komplek • Perumahan & RT/RW Seluruh Indonesia</span>
+              <span>Multi-Tenant • Auto-Mutasi Moota • Peta Warga Interaktif</span>
             </div>
 
             {/* Main Headline */}
@@ -34,60 +34,71 @@ export default function Hero({ onOpenQr }) {
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg text-emerald-100/90 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              Solusi cerdas kelola iuran lingkungan (IPL), transparansi kas terbuka, kartu identitas digital penghuni, hingga respon darurat satpam. Dirancang mandiri dan siap digunakan langsung oleh perumahan, klaster, apartemen, maupun RT/RW di mana pun.
+              Kelola iuran lingkungan (IPL) otomatis, transparansi arus kas terbuka, auto-verifikasi mutasi bank, kartu digital penghuni, dan koordinasi keamanan satpam terpadu.
             </p>
 
-            {/* Download CTA Group */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            {/* Download & Demo CTA Group */}
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
               <a
-                href="/ipl-warga.apk"
-                download="ipl-warga.apk"
-                className="w-full sm:w-auto bg-limeAccent hover:bg-[#c4e62a] active:scale-95 text-darkForest font-extrabold px-6 py-4 rounded-2xl shadow-elevated transition-all flex items-center justify-center gap-3 text-base group"
+                href="/wargaku-ipl.apk"
+                download="wargaku-ipl.apk"
+                className="w-full sm:w-auto bg-limeAccent hover:bg-[#c4e62a] active:scale-95 text-darkForest font-extrabold px-6 py-3.5 rounded-2xl shadow-elevated transition-all flex items-center justify-center gap-3 text-base group"
               >
                 <div className="w-8 h-8 rounded-xl bg-darkForest/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Download className="w-5 h-5 text-darkForest" />
                 </div>
                 <div className="text-left">
-                  <div className="text-xs font-semibold text-darkForest/80 uppercase tracking-wider">Unduh Sekarang</div>
-                  <div className="text-base font-black leading-none">Download APK IPL WARGA</div>
+                  <div className="text-[10px] font-semibold text-darkForest/80 uppercase tracking-wider">Unduh Sekarang</div>
+                  <div className="text-sm sm:text-base font-black leading-none">Download APK (v2.0)</div>
                 </div>
+              </a>
+
+              <a
+                href="https://warga.glosindo.net.id"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto bg-emerald-800/80 hover:bg-emerald-700 text-white font-bold px-5 py-3.5 rounded-2xl border border-emerald-500/40 backdrop-blur-md transition-all flex items-center justify-center gap-2 text-sm shadow-sm"
+              >
+                <Globe className="w-4 h-4 text-limeAccent" />
+                <span>Coba Demo Web</span>
+                <ExternalLink className="w-3.5 h-3.5 text-emerald-300" />
               </a>
 
               <button
                 onClick={onOpenQr}
-                className="w-full sm:w-auto bg-emerald-900/80 hover:bg-emerald-800 text-white font-semibold px-5 py-4 rounded-2xl border border-emerald-600/40 backdrop-blur-md transition-all flex items-center justify-center gap-2.5 text-sm"
+                className="w-full sm:w-auto bg-emerald-950/70 hover:bg-emerald-900 text-emerald-100 font-semibold px-4 py-3.5 rounded-2xl border border-emerald-700/40 backdrop-blur-md transition-all flex items-center justify-center gap-2 text-sm"
               >
-                <Smartphone className="w-5 h-5 text-limeAccent" />
-                <span>Scan QR di Ponsel</span>
+                <Smartphone className="w-4 h-4 text-emerald-400" />
+                <span>Scan QR</span>
               </button>
             </div>
 
             {/* Spec & Security badge */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-emerald-200/80 pt-1">
               <span className="flex items-center gap-1.5 font-mono">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> Ukuran: ~48.7 MB
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> Ukuran: ~47.4 MB
               </span>
               <span className="hidden sm:inline">•</span>
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-limeAccent" /> Multi-Komplek & Skalalabel
+                <ShieldCheck className="w-4 h-4 text-limeAccent" /> Multi-Tenant Multi-Komplek
               </span>
               <span className="hidden sm:inline">•</span>
-              <span>OS: Android 7.0+</span>
+              <span>Android 7.0+ & Web PWA</span>
             </div>
 
             {/* Quick Benefits Bullet List */}
             <div className="pt-4 border-t border-emerald-800/60 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs text-emerald-100">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-limeAccent shrink-0" />
-                <span>Multi-Komplek Mandiri</span>
+                <span>Auto-Mutasi Bank Moota</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-limeAccent shrink-0" />
-                <span>Bayar QRIS & E-Kuitansi</span>
+                <span>Approval Warga Bertingkat</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-limeAccent shrink-0" />
-                <span>Transparansi Kas Riil</span>
+                <span>Transparansi Kas 100% Riil</span>
               </div>
             </div>
 

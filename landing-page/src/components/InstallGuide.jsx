@@ -5,7 +5,7 @@ const STEPS = [
   {
     step: '1',
     title: 'Unduh File APK',
-    desc: 'Tekan tombol "Download APK" di website ini. Tunggu hingga proses unduhan file ipl-warga.apk (~48.7 MB) selesai.',
+    desc: 'Tekan tombol "Download APK" di website ini. Tunggu hingga proses unduhan file wargaku-ipl.apk (~47.4 MB) selesai.',
     icon: Download,
     tip: 'Penyimpanan ponsel Anda hanya membutuhkan ruang sekitar ~60 MB.',
   },
@@ -14,7 +14,7 @@ const STEPS = [
     title: 'Buka File Unduhan',
     desc: 'Buka panel notifikasi HP Anda lalu ketuk file yang baru diunduh, atau temukan file di aplikasi File Saya / Pengelola File > Unduhan (Downloads).',
     icon: FolderDown,
-    tip: 'Nama file: ipl-warga.apk',
+    tip: 'Nama file: wargaku-ipl.apk',
   },
   {
     step: '3',

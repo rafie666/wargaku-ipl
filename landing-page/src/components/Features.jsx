@@ -4,16 +4,14 @@ import {
   Wallet, 
   FileText, 
   ShieldAlert, 
-  Bell, 
   QrCode, 
   CheckCircle, 
-  ArrowRight,
-  Receipt,
-  Users,
+  Building2, 
+  MapPin, 
+  UserCheck, 
+  RefreshCw,
   Eye,
-  Smartphone,
-  Building2,
-  Globe2
+  Sparkles
 } from 'lucide-react';
 
 const FEATURE_LIST = [
@@ -21,49 +19,49 @@ const FEATURE_LIST = [
     id: 'multi-komplek',
     icon: Building2,
     iconBg: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    title: 'Multi-Komplek Seluruh Indonesia',
-    desc: 'Dapat digunakan mandiri oleh perumahan, klaster, apartemen, hingga RT/RW di kota mana pun. Setiap komplek memiliki aturan iuran dan basis data terpisah yang aman.',
+    title: 'Multi-Tenant Komplek Seluruh Indonesia',
+    desc: 'Setiap perumahan, klaster, apartemen, atau RT/RW memiliki database terisolasi aman. Pengurus komplek dapat mengelola pos iuran, rekening bank, dan struktur RT/RW sendiri secara otonom.',
     badge: 'Multi-Tenant Mandiri',
   },
   {
-    id: 'ipl-payment',
-    icon: CreditCard,
+    id: 'moota-payment',
+    icon: RefreshCw,
     iconBg: 'bg-blue-50 text-blue-700 border-blue-200',
-    title: 'Pembayaran IPL & E-Kuitansi Sah',
-    desc: 'Bayar iuran kebersihan, keamanan, dan fasum via QRIS nasional atau Transfer Bank. Bukti lunas diterbitkan otomatis dan tersimpan abadi di ponsel Anda.',
-    badge: 'Otomatis & Akurat',
+    title: 'Auto-Verifikasi Mutasi Bank & QRIS',
+    desc: 'Terintegrasi langsung dengan payment gateway & Moota. Bukti transfer bank dan QRIS dicek otomatis secara real-time—tanpa bendahara harus mengecek mutasi m-banking manual satu per satu.',
+    badge: 'Auto-Check Moota',
+  },
+  {
+    id: 'approval-warga',
+    icon: UserCheck,
+    iconBg: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+    title: 'Registrasi Mandiri & Sistem Approval',
+    desc: 'Warga baru atau penyewa kontrakan dapat mendaftar mandiri lewat ponsel. Akun otomatis masuk antrean verifikasi pengurus RT/RW sebelum memperoleh akses data komplek.',
+    badge: 'Verifikasi Bertingkat',
+  },
+  {
+    id: 'peta-warga',
+    icon: MapPin,
+    iconBg: 'bg-amber-50 text-amber-700 border-amber-200',
+    title: 'Peta Warga & Status Unit Interaktif',
+    desc: 'Visualisasi denah blok rumah secara interaktif. Ketahui status kepemilikan (Pemilik vs Penyewa, Dihuni vs Kosong) serta filter instan siapa yang sudah lunas dan menunggak iuran.',
+    badge: 'Peta Spasial Blok',
   },
   {
     id: 'transparency',
     icon: Eye,
-    iconBg: 'bg-amber-50 text-amber-700 border-amber-200',
-    title: 'Transparansi Kas Lingkungan',
-    desc: 'Warga komplek berhak tahu alokasi dana iuran. Pantau arus kas masuk, pengeluaran sampah, perbaikan fasilitas, dan saldo kas pengurus secara terbuka dan real-time.',
-    badge: '100% Terbuka',
+    iconBg: 'bg-teal-50 text-teal-700 border-teal-200',
+    title: 'Transparansi Kas Lingkungan 100% Riil',
+    desc: 'Semua pemasukan iuran sampah, keamanan, dan perbaikan fasum tercatat di buku kas terbuka. Laporan keuangan disajikan dengan angka tabular rapi dan dapat diunduh kapan saja oleh warga.',
+    badge: 'Kas Terbuka',
   },
   {
-    id: 'virtual-card',
-    icon: QrCode,
-    iconBg: 'bg-indigo-50 text-indigo-700 border-indigo-200',
-    title: 'Kartu Digital Warga (Virtual ID)',
-    desc: 'Identitas resmi penghuni komplek dengan kode unik dan format blok rumah baku (misal: Blok B-12 / No. 04). Praktis ditunjukkan ke pos satpam saat verifikasi tamu.',
-    badge: 'Format Standar',
-  },
-  {
-    id: 'emergency',
+    id: 'virtual-id-darurat',
     icon: ShieldAlert,
     iconBg: 'bg-rose-50 text-rose-700 border-rose-200',
-    title: 'Tombol Darurat & Pos Satpam',
-    desc: 'Butuh bantuan cepat saat insiden medis, kebakaran, atau ancaman keamanan? Hubungi pos jaga satpam komplek dan kontak darurat dalam satu sentuhan.',
-    badge: 'Respon Kilat',
-  },
-  {
-    id: 'surat-rt',
-    icon: FileText,
-    iconBg: 'bg-purple-50 text-purple-700 border-purple-200',
-    title: 'Layanan Surat & Pengaduan Fasum',
-    desc: 'Ajukan perizinan surat pengantar, lapor fasilitas jalan/lampu rusak dengan foto, dan pantau progres perbaikan oleh pengurus komplek tanpa birokrasi rumit.',
-    badge: 'Bebas Birokrasi',
+    title: 'Kartu Digital Warga & Respon Darurat',
+    desc: 'ID digital penghuni berformat standar blok/unit untuk akses tamu dan pos satpam. Dilengkapi panic button darurat terhubung langsung ke ponsel petugas jaga 24 jam.',
+    badge: 'Respon Cepat 24 Jam',
   },
 ];
 
@@ -75,13 +73,13 @@ export default function Features() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider">
-            Fitur Utama Aplikasi
+            Fitur Generasi Baru (v2.0)
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Tata Kelola Lingkungan Modern, Transparan, & Terbuka Global
+            Tata Kelola Lingkungan Modern, Otonom, & Transparan
           </h2>
           <p className="text-base sm:text-lg text-slate-600">
-            IPL WARGA diciptakan untuk menjawab kebutuhan riil warga dan pengurus perumahan. Dari cluster kecil hingga kawasan pemukiman besar, semua iuran tertata rapi.
+            IPL WARGA hadir dengan arsitektur multi-tenant, verifikasi mutasi bank otomatis, dan pemetaan hunian digital untuk kebutuhan nyata perumahan dan RT/RW Indonesia.
           </p>
         </div>
 
@@ -99,56 +97,26 @@ export default function Features() {
                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border shadow-sm group-hover:scale-110 transition-transform ${feat.iconBg}`}>
                       <IconComponent className="w-6 h-6" />
                     </div>
-                    <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
                       {feat.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-emerald-700 transition-colors">
                     {feat.title}
                   </h3>
-
-                  <p className="mt-3 text-sm text-slate-600 leading-relaxed">
+                  <p className="text-sm text-slate-600 leading-relaxed">
                     {feat.desc}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-emerald-700 group-hover:text-emerald-800">
-                  <span>Sistem Terintegrasi</span>
-                  <CheckCircle className="w-4 h-4 ml-1.5 text-emerald-600" />
+                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center gap-1 text-xs font-bold text-emerald-700">
+                  <CheckCircle className="w-4 h-4 text-emerald-600" />
+                  <span>Siap Pakai di Aplikasi</span>
                 </div>
               </div>
             );
           })}
-        </div>
-
-        {/* Feature Highlight Banner */}
-        <div className="mt-16 bg-gradient-to-r from-emerald-900 via-emerald-800 to-slate-900 rounded-3xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden">
-          <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 w-64 h-64 bg-limeAccent/10 rounded-full blur-2xl pointer-events-none" />
-          
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-8 space-y-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-limeAccent bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-700/60 inline-block">
-                Penagihan Ramah Warga
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-                Tanpa Intimidasi, Penuh Penghormatan Antar Warga
-              </h3>
-              <p className="text-sm sm:text-base text-emerald-100/90 leading-relaxed max-w-2xl">
-                Sistem pengingat tagihan kami dirancang ramah dengan warna peringatan sopan (amber). Tidak ada rasa malu atau intimidasi—semua komunikasi iuran tetap hangat sesuai semangat guyub rukun warga Indonesia.
-              </p>
-            </div>
-            <div className="lg:col-span-4 flex justify-start lg:justify-end">
-              <a
-                href="/wargaku-ipl.apk"
-                download="wargaku-ipl.apk"
-                className="bg-limeAccent hover:bg-[#c2e22f] text-darkForest font-extrabold text-sm px-6 py-3.5 rounded-2xl shadow-md transition-all flex items-center gap-2 active:scale-95"
-              >
-                <span>Unduh Aplikasi Sekarang</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
         </div>
 
       </div>

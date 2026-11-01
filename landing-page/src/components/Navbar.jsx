@@ -77,10 +77,23 @@ export default function Navbar({ onOpenQr }) {
           </div>
 
           {/* Desktop CTA Buttons */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2.5">
+            <a
+              href="https://warga.glosindo.net.id"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`text-xs font-semibold px-3 py-2 rounded-lg border transition-all flex items-center gap-1.5 ${
+                scrolled
+                  ? 'border-emerald-600 text-emerald-700 hover:bg-emerald-50'
+                  : 'border-emerald-600/70 text-emerald-200 hover:bg-emerald-900/60'
+              }`}
+            >
+              Demo Web
+            </a>
+
             <button
               onClick={onOpenQr}
-              className={`text-xs font-semibold px-3.5 py-2 rounded-lg border transition-all flex items-center gap-1.5 ${
+              className={`text-xs font-semibold px-3 py-2 rounded-lg border transition-all flex items-center gap-1.5 ${
                 scrolled
                   ? 'border-slate-300 text-slate-700 hover:bg-slate-100'
                   : 'border-emerald-700 text-emerald-100 hover:bg-emerald-900/60'
@@ -92,8 +105,8 @@ export default function Navbar({ onOpenQr }) {
             </button>
 
             <a
-              href="/ipl-warga.apk"
-              download="ipl-warga.apk"
+              href="/wargaku-ipl.apk"
+              download="wargaku-ipl.apk"
               className="bg-limeAccent hover:bg-[#c2e22f] text-darkForest text-xs font-bold px-4 py-2 rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-2 active:scale-95"
             >
               <Download className="w-3.5 h-3.5 text-darkForest" />
@@ -104,8 +117,8 @@ export default function Navbar({ onOpenQr }) {
           {/* Mobile Menu Toggle Button */}
           <div className="md:hidden flex items-center gap-2">
             <a
-              href="/ipl-warga.apk"
-              download="ipl-warga.apk"
+              href="/wargaku-ipl.apk"
+              download="wargaku-ipl.apk"
               className="bg-limeAccent text-darkForest text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm"
             >
               <Download className="w-3.5 h-3.5" />
@@ -164,8 +177,16 @@ export default function Navbar({ onOpenQr }) {
 
             <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
               <a
-                href="/ipl-warga.apk"
-                download="ipl-warga.apk"
+                href="https://warga.glosindo.net.id"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-center flex items-center justify-center gap-2 text-sm shadow-sm"
+              >
+                Coba Demo Web
+              </a>
+              <a
+                href="/wargaku-ipl.apk"
+                download="wargaku-ipl.apk"
                 className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-center flex items-center justify-center gap-2 shadow-sm"
               >
                 <Download className="w-4 h-4" />

@@ -49,22 +49,32 @@ export default function DownloadSection({ onOpenQr }) {
               </p>
 
               {/* Big Download Button */}
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
                 <a
-                  href="/ipl-warga.apk"
-                  download="ipl-warga.apk"
-                  className="w-full sm:w-auto bg-limeAccent hover:bg-[#c5e729] active:scale-95 text-darkForest font-black px-8 py-4 rounded-2xl shadow-elevated transition-all flex items-center justify-center gap-3 text-base group"
+                  href="/wargaku-ipl.apk"
+                  download="wargaku-ipl.apk"
+                  className="w-full sm:w-auto bg-limeAccent hover:bg-[#c5e729] active:scale-95 text-darkForest font-black px-7 py-3.5 rounded-2xl shadow-elevated transition-all flex items-center justify-center gap-3 text-base group"
                 >
                   <Download className="w-5 h-5 text-darkForest group-hover:scale-110 transition-transform" />
-                  <span>Download APK Android (48.7 MB)</span>
+                  <span>Download APK (47.4 MB)</span>
+                </a>
+
+                <a
+                  href="https://warga.glosindo.net.id"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto bg-emerald-800/80 hover:bg-emerald-700 text-white font-bold px-5 py-3.5 rounded-2xl border border-emerald-500/40 transition-all flex items-center justify-center gap-2 text-sm shadow-sm"
+                >
+                  <ExternalLink className="w-4 h-4 text-limeAccent" />
+                  <span>Akses Demo Web</span>
                 </a>
 
                 <button
                   onClick={onOpenQr}
-                  className="w-full sm:w-auto bg-emerald-900/90 hover:bg-emerald-800 text-white font-semibold px-5 py-4 rounded-2xl border border-emerald-600/40 transition-all flex items-center justify-center gap-2 text-sm"
+                  className="w-full sm:w-auto bg-emerald-950/80 hover:bg-emerald-900 text-white font-semibold px-4 py-3.5 rounded-2xl border border-emerald-700/40 transition-all flex items-center justify-center gap-2 text-sm"
                 >
-                  <QrCode className="w-4 h-4 text-limeAccent" />
-                  <span>Scan via Ponsel</span>
+                  <QrCode className="w-4 h-4 text-emerald-400" />
+                  <span>Scan QR</span>
                 </button>
               </div>
 
@@ -76,7 +86,7 @@ export default function DownloadSection({ onOpenQr }) {
                 </div>
                 <div>
                   <div className="text-[11px] text-emerald-300">Ukuran APK</div>
-                  <div className="text-sm font-bold font-mono text-white">48.7 MB</div>
+                  <div className="text-sm font-bold font-mono text-white">47.4 MB</div>
                 </div>
                 <div>
                   <div className="text-[11px] text-emerald-300">Target Sistem</div>

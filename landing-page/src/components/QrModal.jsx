@@ -7,8 +7,8 @@ export default function QrModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   const downloadUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/ipl-warga.apk`
-    : 'https://wargaku-ipl.local/ipl-warga.apk';
+    ? `${window.location.origin}/wargaku-ipl.apk`
+    : 'https://warga.glosindo.net.id/wargaku-ipl.apk';
 
   const copyUrl = () => {
     navigator.clipboard.writeText(downloadUrl);
@@ -137,8 +137,8 @@ export default function QrModal({ isOpen, onClose }) {
         {/* Action button inside modal */}
         <div className="mt-6 flex gap-3">
           <a
-            href="/ipl-warga.apk"
-            download="ipl-warga.apk"
+            href="/wargaku-ipl.apk"
+            download="wargaku-ipl.apk"
             className="flex-1 bg-limeAccent hover:bg-[#c2e22f] text-darkForest font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-xs shadow-sm"
           >
             <Download className="w-4 h-4 text-darkForest" />
