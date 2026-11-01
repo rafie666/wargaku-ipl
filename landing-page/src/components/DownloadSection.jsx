@@ -60,7 +60,7 @@ export default function DownloadSection({ onOpenQr }) {
                 </a>
 
                 <a
-                  href="https://warga.glosindo.net.id"
+                  href="/app/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto bg-emerald-800/80 hover:bg-emerald-700 text-white font-bold px-5 py-3.5 rounded-2xl border border-emerald-500/40 transition-all flex items-center justify-center gap-2 text-sm shadow-sm"

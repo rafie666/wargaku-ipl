@@ -79,7 +79,7 @@ export default function Navbar({ onOpenQr }) {
           {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center gap-2.5">
             <a
-              href="https://warga.glosindo.net.id"
+              href="/app/"
               target="_blank"
               rel="noopener noreferrer"
               className={`text-xs font-semibold px-3 py-2 rounded-lg border transition-all flex items-center gap-1.5 ${
@@ -177,7 +177,7 @@ export default function Navbar({ onOpenQr }) {
 
             <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
               <a
-                href="https://warga.glosindo.net.id"
+                href="/app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-center flex items-center justify-center gap-2 text-sm shadow-sm"
