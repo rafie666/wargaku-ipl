@@ -28,8 +28,8 @@ export default function Footer({ onOpenQr }) {
 
           <div className="flex items-center gap-3 shrink-0">
             <a
-              href="/wargaku-ipl.apk"
-              download="wargaku-ipl.apk"
+              href="/ipl-warga.apk"
+              download="ipl-warga.apk"
               className="bg-limeAccent hover:bg-[#c2e22f] active:scale-95 text-darkForest text-xs font-black px-5 py-3 rounded-xl shadow-md transition-all flex items-center gap-2"
             >
               <Download className="w-4 h-4 text-darkForest" />
@@ -50,17 +50,24 @@ export default function Footer({ onOpenQr }) {
           
           {/* Brand Info & Mission (Col 1-5) */}
           <div className="lg:col-span-5 space-y-5">
-            <div>
-              <span className="text-2xl font-black text-white tracking-tight">
-                Wargaku<span className="text-emerald-500">IPL</span>
-              </span>
-              <p className="text-xs text-emerald-400 font-medium mt-1">
-                Sistem Informasi & Tata Kelola Iuran Lingkungan
-              </p>
+            <div className="flex items-center gap-3">
+              <img 
+                src="/logo.png" 
+                alt="Logo IPL WARGA" 
+                className="w-10 h-10 rounded-xl object-cover border border-emerald-500/30 shadow-sm"
+              />
+              <div>
+                <span className="text-2xl font-black text-white tracking-tight leading-none">
+                  IPL<span className="text-emerald-500">WARGA</span>
+                </span>
+                <p className="text-xs text-emerald-400 font-medium mt-0.5">
+                  Platform Multi-Komplek & Manajemen Iuran Lingkungan
+                </p>
+              </div>
             </div>
 
             <p className="text-xs sm:text-sm text-slate-400 max-w-sm leading-relaxed">
-              Platform digital mandiri untuk pencatatan iuran warga, transparansi kas RT/RW terbuka, kartu identitas virtual penghuni, serta layanan administrasi rukun tetangga tanpa birokrasi berbelit.
+              Platform digital mandiri untuk pencatatan iuran warga, transparansi kas lingkungan terbuka, kartu identitas virtual penghuni, serta administrasi perumahan, klaster, dan RT/RW se-Indonesia tanpa birokrasi berbelit.
             </p>
 
             <div className="flex flex-wrap items-center gap-2.5 pt-1">

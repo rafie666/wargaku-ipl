@@ -18,6 +18,7 @@ function getServerUrl(req) {
 }
 const SERVER_URL = process.env.SERVER_URL || 'https://api-warga.glosindo.net.id';
 
+// 1. PostgreSQL Connection Pool
 const pool = new Pool({
   host: process.env.DB_HOST || '103.134.221.200',
   port: parseInt(process.env.DB_PORT || '5432', 10),
@@ -33,16 +34,19 @@ pool.on('error', (err) => {
   console.error('[DB POOL ERROR]', err.message);
 });
 
+// 2. Middleware
 app.use(cors({ origin: '*' }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
+// Static uploads directory
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 if (!fs.existsSync(UPLOADS_DIR)) {
   fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 }
 app.use('/uploads', express.static(UPLOADS_DIR));
 
+// Multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const bucket = req.body.bucket || req.query.bucket || 'bukti-transfer';
@@ -60,8 +64,9 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage, limits: { fileSize: 25 * 1024 * 1024 } });
 
+// Allowed tables whitelist for security
 const ALLOWED_TABLES = new Set([
-  'wargaku_kompleks',
+  // Core tables
   'wargaku_config',
   'wargaku_jenis_iuran',
   'wargaku_warga',
@@ -83,11 +88,39 @@ const ALLOWED_TABLES = new Set([
   'wargaku_jadwal_satpam',
   'wargaku_petugas_satpam',
   'wargaku_admin_auth',
-  'wargaku_rw',
-  'wargaku_rt',
+  'wargaku_kompleks',
   'wargaku_residents',
+  'wargaku_rt',
+  'wargaku_rw',
   'wargaku_emergency_contacts',
-  'wargaku_announcements'
+
+  // Admin Features Tables (20261028)
+  'pos_iuran',
+  'wargaku_pos_iuran',
+  'rekening_bank',
+  'wargaku_rekening_bank',
+  'template_surat',
+  'wargaku_template_surat',
+  'komplek_metadata',
+  'wargaku_komplek_metadata',
+  'platform_announcements',
+  'wargaku_platform_announcements',
+  'support_tickets',
+  'wargaku_support_tickets',
+  'activity_logs',
+  'wargaku_activity_logs',
+  'feature_flags',
+  'wargaku_feature_flags',
+  'system_configs',
+  'wargaku_system_configs',
+  'reset_requests',
+
+  // Aliases & Views
+  'kompleks',
+  'users',
+  'warga',
+  'tagihan',
+  'kas'
 ]);
 
 function validateTable(tableName) {
@@ -97,49 +130,62 @@ function validateTable(tableName) {
   return tableName;
 }
 
+// 3. Health Endpoint
 app.get('/health', async (req, res) => {
   try {
     const dbRes = await pool.query('SELECT NOW() AS now');
     res.json({
       status: 'ok',
       time: dbRes.rows[0].now,
-      database: 'connected',
-      service: 'wargaku-api-rbac-v2.3.0'
+      database: 'connected (Server 1)',
+      service: 'wargaku-native-api (Server 2)'
     });
   } catch (err) {
     res.status(500).json({ status: 'error', error: err.message });
   }
 });
 
-const authRoutes = require('./routes/auth');
-const adminKomplekRoutes = require('./routes/adminKomplek');
-const seedRoutes = require('./routes/seed');
-
-app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminKomplekRoutes);
-app.use('/api/seed', seedRoutes);
-
+// 4. Batch Sync Endpoint
 app.get('/api/sync', async (req, res) => {
   try {
     const komplekId = req.query.komplek_id;
-    const tables = Array.from(ALLOWED_TABLES);
-    const queries = tables.map((t) => {
-      if (t === 'wargaku_kompleks') {
-        return pool.query(`SELECT id, data, updated_at FROM public.${t} ORDER BY updated_at DESC`);
+    const syncTables = [
+      'wargaku_config', 'wargaku_jenis_iuran', 'wargaku_warga',
+      'wargaku_tagihan', 'wargaku_kas', 'wargaku_events',
+      'wargaku_tagihan_events', 'wargaku_rts', 'wargaku_rws',
+      'wargaku_users', 'wargaku_pengaduan', 'wargaku_surat',
+      'wargaku_kontak_darurat', 'wargaku_bank_accounts', 'wargaku_qris_accounts',
+      'wargaku_notifications', 'wargaku_audit_logs', 'wargaku_kompleks',
+      'pos_iuran', 'rekening_bank', 'template_surat', 'komplek_metadata'
+    ];
+
+    const queries = syncTables.map(async (t) => {
+      try {
+        let q = `SELECT * FROM public.${t}`;
+        if (t === 'wargaku_kompleks' || t === 'komplek_metadata') {
+          q += ` ORDER BY 1 DESC`;
+          const r = await pool.query(q);
+          return r.rows;
+        }
+        if (komplekId) {
+          q += ` WHERE (komplek_id = $1 OR data->>'komplek_id' = $1 OR data->>'komplek_id' IS NULL) ORDER BY 1 DESC`;
+          const r = await pool.query(q, [komplekId]);
+          return r.rows;
+        }
+        q += ` ORDER BY 1 DESC`;
+        const r = await pool.query(q);
+        return r.rows;
+      } catch (err) {
+        console.warn(`[SYNC WARN] ${t}:`, err.message);
+        return [];
       }
-      if (komplekId) {
-        return pool.query(
-          `SELECT id, data, updated_at FROM public.${t} WHERE (data->>'komplek_id' = $1 OR data->>'komplek_id' IS NULL) ORDER BY updated_at DESC`,
-          [komplekId]
-        );
-      }
-      return pool.query(`SELECT id, data, updated_at FROM public.${t} ORDER BY updated_at DESC`);
     });
+
     const results = await Promise.all(queries);
 
     const payload = {};
-    tables.forEach((tableName, index) => {
-      payload[tableName] = results[index].rows;
+    syncTables.forEach((tableName, index) => {
+      payload[tableName] = results[index].map((r) => (r.data === undefined ? { ...r, data: { ...r } } : r));
     });
 
     res.json({ success: true, data: payload });
@@ -149,57 +195,111 @@ app.get('/api/sync', async (req, res) => {
   }
 });
 
+// 5. Query Table Data
 app.get('/api/data/:table', async (req, res) => {
   try {
     const tableName = validateTable(req.params.table);
-    const { id, select, order, komplek_id } = req.query;
+    const { select, order, limit, offset, ...filterParams } = req.query;
 
     let whereClauses = [];
     const params = [];
 
-    if (id) {
-      if (id.startsWith('eq.')) {
-        params.push(id.substring(3));
-        whereClauses.push(`id = $${params.length}`);
-      } else if (id.startsWith('in.(') && id.endsWith(')')) {
-        const ids = id.substring(4, id.length - 1).split(',').map((s) => s.trim().replace(/^"|"$/g, ''));
+    const formatCol = (col) => {
+      if (col.includes('->>')) {
+        const parts = col.split('->>');
+        return `(${parts[0].replace(/[^a-zA-Z0-9_]/g, '')}->>'${parts[1].replace(/[^a-zA-Z0-9_]/g, '')}')`;
+      }
+      if (col.includes('->')) {
+        const parts = col.split('->');
+        return `(${parts[0].replace(/[^a-zA-Z0-9_]/g, '')}->'${parts[1].replace(/[^a-zA-Z0-9_]/g, '')}')`;
+      }
+      return `"${col.replace(/[^a-zA-Z0-9_]/g, '')}"`;
+    };
+
+    for (const [key, val] of Object.entries(filterParams)) {
+      if (typeof val !== 'string') continue;
+
+      if (val.startsWith('eq.')) {
+        params.push(val.substring(3));
+        whereClauses.push(`${formatCol(key)} = $${params.length}`);
+      } else if (val.startsWith('neq.')) {
+        params.push(val.substring(4));
+        whereClauses.push(`${formatCol(key)} != $${params.length}`);
+      } else if (val.startsWith('gte.')) {
+        params.push(val.substring(4));
+        whereClauses.push(`${formatCol(key)} >= $${params.length}`);
+      } else if (val.startsWith('gt.')) {
+        params.push(val.substring(3));
+        whereClauses.push(`${formatCol(key)} > $${params.length}`);
+      } else if (val.startsWith('lte.')) {
+        params.push(val.substring(4));
+        whereClauses.push(`${formatCol(key)} <= $${params.length}`);
+      } else if (val.startsWith('lt.')) {
+        params.push(val.substring(3));
+        whereClauses.push(`${formatCol(key)} < $${params.length}`);
+      } else if (val.startsWith('like.')) {
+        params.push(val.substring(5));
+        whereClauses.push(`${formatCol(key)} LIKE $${params.length}`);
+      } else if (val.startsWith('ilike.')) {
+        params.push(val.substring(6));
+        whereClauses.push(`${formatCol(key)} ILIKE $${params.length}`);
+      } else if (val.startsWith('in.(') && val.endsWith(')')) {
+        const ids = val.substring(4, val.length - 1).split(',').map((s) => s.trim().replace(/^"|"$/g, ''));
         params.push(ids);
-        whereClauses.push(`id = ANY($${params.length}::text[])`);
+        whereClauses.push(`${formatCol(key)} = ANY($${params.length}::text[])`);
+      } else if (val.startsWith('is.')) {
+        const nullVal = val.substring(3).toLowerCase();
+        if (nullVal === 'null') {
+          whereClauses.push(`${formatCol(key)} IS NULL`);
+        } else if (nullVal === 'not.null') {
+          whereClauses.push(`${formatCol(key)} IS NOT NULL`);
+        }
       } else {
-        params.push(id);
-        whereClauses.push(`id = $${params.length}`);
+        params.push(val);
+        whereClauses.push(`${formatCol(key)} = $${params.length}`);
       }
     }
 
-    let targetKomplekId = komplek_id;
-    if (targetKomplekId && targetKomplekId.startsWith('eq.')) {
-      targetKomplekId = targetKomplekId.substring(3);
-    }
-
-    if (targetKomplekId) {
-      if (tableName === 'wargaku_kompleks') {
-        params.push(targetKomplekId);
-        whereClauses.push(`id = $${params.length}`);
-      } else {
-        params.push(targetKomplekId);
-        whereClauses.push(`(data->>'komplek_id' = $${params.length} OR data->>'komplek_id' IS NULL)`);
-      }
-    }
-
-    let queryText = `SELECT id, data, updated_at FROM public.${tableName}`;
+    let queryText = `SELECT * FROM public.${tableName}`;
     if (whereClauses.length > 0) {
       queryText += ` WHERE ` + whereClauses.join(' AND ');
     }
-    queryText += ` ORDER BY updated_at DESC`;
+
+    if (order && typeof order === 'string') {
+      const orderParts = order.split('.');
+      const orderCol = formatCol(orderParts[0]);
+      const orderDir = (orderParts[1] || 'asc').toLowerCase() === 'desc' ? 'DESC' : 'ASC';
+      queryText += ` ORDER BY ${orderCol} ${orderDir}`;
+    } else {
+      queryText += ` ORDER BY 1 DESC`;
+    }
+
+    if (limit && !isNaN(parseInt(limit, 10))) {
+      params.push(parseInt(limit, 10));
+      queryText += ` LIMIT $${params.length}`;
+    }
+    if (offset && !isNaN(parseInt(offset, 10))) {
+      params.push(parseInt(offset, 10));
+      queryText += ` OFFSET $${params.length}`;
+    }
 
     const { rows } = await pool.query(queryText, params);
-    res.json(rows);
+
+    const normalizedRows = rows.map((r) => {
+      if (r.data === undefined) {
+        return { ...r, data: { ...r } };
+      }
+      return r;
+    });
+
+    res.json(normalizedRows);
   } catch (err) {
     console.error(`[GET /api/data/${req.params.table}]`, err.message);
     res.status(400).json({ error: err.message });
   }
 });
 
+// 6. Upsert Data
 app.post('/api/data/:table/upsert', async (req, res) => {
   try {
     const tableName = validateTable(req.params.table);
@@ -220,28 +320,60 @@ app.post('/api/data/:table/upsert', async (req, res) => {
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
-      const upsertQuery = `
-        INSERT INTO public.${tableName} (id, data, updated_at)
-        VALUES ($1, $2, NOW())
-        ON CONFLICT (id) DO UPDATE
-        SET data = EXCLUDED.data, updated_at = NOW()
-        RETURNING id, data, updated_at;
-      `;
+
+      const TABLES_WITH_KOMPLEK_COL = new Set([
+        'pos_iuran', 'wargaku_pos_iuran',
+        'rekening_bank', 'wargaku_rekening_bank',
+        'template_surat', 'wargaku_template_surat',
+        'komplek_metadata', 'wargaku_komplek_metadata',
+        'support_tickets', 'wargaku_support_tickets',
+        'activity_logs', 'wargaku_activity_logs'
+      ]);
 
       const results = [];
       for (const item of items) {
         const rowId = item.id || (item.data && item.data.id) || `row-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
         let rowData = item.data !== undefined ? item.data : item;
 
-        if (tableName !== 'wargaku_kompleks' && typeof rowData === 'object' && rowData !== null) {
-          const tenantId = rowData.komplek_id || req.query.komplek_id || req.headers['x-komplek-id'] || 'komplek-permata-bintaro';
-          if (!rowData.komplek_id) {
-            rowData = { ...rowData, komplek_id: tenantId };
+        if (TABLES_WITH_KOMPLEK_COL.has(tableName)) {
+          const kId = item.komplek_id || (item.data && item.data.komplek_id) || req.query.komplek_id || rowData.komplek_id || '76bf56cc-bafb-4d06-a701-62a520bce398';
+          const upsertSql = `
+            INSERT INTO public.${tableName} (id, komplek_id, data, updated_at)
+            VALUES ($1, $2, $3, NOW())
+            ON CONFLICT (id) DO UPDATE
+            SET komplek_id = EXCLUDED.komplek_id, data = EXCLUDED.data, updated_at = NOW()
+            RETURNING *;
+          `;
+          const { rows } = await client.query(upsertSql, [String(rowId), kId, JSON.stringify(rowData)]);
+          results.push(rows[0]);
+        } else if (tableName === 'platform_announcements' || tableName === 'wargaku_platform_announcements') {
+          const upsertSql = `
+            INSERT INTO public.${tableName} (id, data, updated_at)
+            VALUES ($1, $2, NOW())
+            ON CONFLICT (id) DO UPDATE
+            SET data = EXCLUDED.data, updated_at = NOW()
+            RETURNING *;
+          `;
+          const { rows } = await client.query(upsertSql, [String(rowId), JSON.stringify(rowData)]);
+          results.push(rows[0]);
+        } else {
+          // Standard JSONB table
+          if (tableName !== 'wargaku_kompleks' && typeof rowData === 'object' && rowData !== null) {
+            const tenantId = rowData.komplek_id || req.query.komplek_id || req.headers['x-komplek-id'] || 'komplek-permata-bintaro';
+            if (!rowData.komplek_id) {
+              rowData = { ...rowData, komplek_id: tenantId };
+            }
           }
+          const upsertSql = `
+            INSERT INTO public.${tableName} (id, data, updated_at)
+            VALUES ($1, $2, NOW())
+            ON CONFLICT (id) DO UPDATE
+            SET data = EXCLUDED.data, updated_at = NOW()
+            RETURNING id, data, updated_at;
+          `;
+          const { rows } = await client.query(upsertSql, [String(rowId), JSON.stringify(rowData)]);
+          results.push(rows[0]);
         }
-
-        const { rows } = await client.query(upsertQuery, [String(rowId), JSON.stringify(rowData)]);
-        results.push(rows[0]);
       }
       await client.query('COMMIT');
       res.json({ success: true, count: results.length, data: results });
@@ -257,6 +389,7 @@ app.post('/api/data/:table/upsert', async (req, res) => {
   }
 });
 
+// PostgREST compatibility alias
 app.post('/api/data/:table', async (req, res) => {
   return app._router.handle(
     Object.assign(req, { url: `/api/data/${req.params.table}/upsert` }),
@@ -264,21 +397,70 @@ app.post('/api/data/:table', async (req, res) => {
   );
 });
 
+// 7. Delete Row(s)
 app.delete('/api/data/:table/:id', async (req, res) => {
   try {
     const tableName = validateTable(req.params.table);
     const { id } = req.params;
-    const komplekId = req.query.komplek_id || req.headers['x-komplek-id'];
-    if (komplekId && tableName !== 'wargaku_kompleks') {
-      await pool.query(
-        `DELETE FROM public.${tableName} WHERE id = $1 AND (data->>'komplek_id' = $2 OR data->>'komplek_id' IS NULL)`,
-        [id, komplekId]
-      );
-    } else {
-      await pool.query(`DELETE FROM public.${tableName} WHERE id = $1`, [id]);
-    }
+    await pool.query(`DELETE FROM public.${tableName} WHERE id = $1`, [id]);
     res.json({ success: true, deleted: id });
   } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// 7b. Patch / Update Record
+app.patch('/api/data/:table', async (req, res) => {
+  try {
+    const tableName = validateTable(req.params.table);
+    const body = req.body;
+    let targetId = req.query.id;
+    if (targetId && targetId.startsWith('eq.')) {
+      targetId = targetId.substring(3);
+    }
+    if (!targetId && body && body.id) {
+      targetId = body.id;
+    }
+    if (!targetId) {
+      return res.status(400).json({ error: 'Missing ID for update' });
+    }
+
+    const colCheck = await pool.query(
+      `SELECT column_name FROM information_schema.columns WHERE table_name = $1 AND column_name = 'data'`,
+      [tableName]
+    );
+
+    let updatedRow;
+    if (colCheck.rows.length > 0) {
+      const updateData = body.data !== undefined ? body.data : body;
+      const { rows } = await pool.query(
+        `UPDATE public.${tableName} 
+         SET data = data || $1::jsonb, updated_at = NOW() 
+         WHERE id = $2 
+         RETURNING *`,
+        [JSON.stringify(updateData), targetId]
+      );
+      updatedRow = rows[0];
+    } else {
+      const entries = Object.entries(body).filter(([k]) => k !== 'id');
+      if (entries.length === 0) {
+        return res.json({ success: true });
+      }
+      const setParts = [];
+      const params = [];
+      for (const [col, val] of entries) {
+        params.push(val);
+        setParts.push(`"${col}" = $${params.length}`);
+      }
+      params.push(targetId);
+      const q = `UPDATE public.${tableName} SET ${setParts.join(', ')}, updated_at = NOW() WHERE id = $${params.length} RETURNING *`;
+      const { rows } = await pool.query(q, params);
+      updatedRow = rows[0];
+    }
+
+    res.json({ success: true, data: updatedRow });
+  } catch (err) {
+    console.error(`[PATCH /api/data/${req.params.table}]`, err.message);
     res.status(400).json({ error: err.message });
   }
 });
@@ -310,6 +492,7 @@ app.delete('/api/data/:table', async (req, res) => {
   }
 });
 
+// 8. Upload File
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   try {
     const bucket = req.body.bucket || req.query.bucket || 'bukti-transfer';
@@ -356,6 +539,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   }
 });
 
+// 8.5. EXPO UPDATES (OTA) PROTOCOL V1
 const FormData = require('form-data');
 const crypto = require('crypto');
 
@@ -513,6 +697,7 @@ app.get('/api/updates/assets/*', (req, res) => {
   }
 });
 
+// 9. Manual Auto-Billing Trigger
 app.post('/api/billing/check', async (req, res) => {
   try {
     const result = await pool.query('SELECT fn_check_and_run_auto_billing() AS summary');
@@ -523,6 +708,7 @@ app.post('/api/billing/check', async (req, res) => {
   }
 });
 
+// 10. Automated Cron: Auto-Billing Asia/Jakarta
 cron.schedule('5 * * * *', async () => {
   try {
     console.log('[CRON] Running automatic billing check (Asia/Jakarta)...');
@@ -535,12 +721,61 @@ cron.schedule('5 * * * *', async () => {
   timezone: 'Asia/Jakarta'
 });
 
+
+// 11. RPC Endpoint for PostgreSQL Stored Procedures
+app.post("/api/rpc/:fn", async (req, res) => {
+  const { fn } = req.params;
+  const params = req.body || {};
+  try {
+    if (fn === "provision_new_komplek") {
+      const {
+        p_komplek_nama,
+        p_komplek_alamat,
+        p_komplek_kota,
+        p_komplek_kode_pos,
+        p_admin_name,
+        p_admin_phone,
+        p_admin_email,
+        p_admin_password
+      } = params;
+      const result = await pool.query(
+        "SELECT public.provision_new_komplek($1, $2, $3, $4, $5, $6, $7, $8) AS result",
+        [
+          p_komplek_nama,
+          p_komplek_alamat || "",
+          p_komplek_kota || "",
+          p_komplek_kode_pos || "",
+          p_admin_name,
+          p_admin_phone,
+          p_admin_email || "",
+          p_admin_password
+        ]
+      );
+      return res.json(result.rows[0]?.result || {});
+    }
+
+    if (fn === "validate_tenant_relationships") {
+      const { p_komplek_id, p_rw_id, p_rt_id } = params;
+      const result = await pool.query(
+        "SELECT public.validate_tenant_relationships($1, $2, $3) AS result",
+        [p_komplek_id, p_rw_id, p_rt_id]
+      );
+      return res.json(result.rows[0]?.result || false);
+    }
+
+    return res.status(404).json({ error: `Unknown RPC function: ${fn}` });
+  } catch (err) {
+    console.error(`[RPC ${fn} ERROR]`, err.message);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// Start Server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`===============================================`);
-  console.log(`🚀 WARGAKU REST API SERVER ONLINE (RBAC v2.3.0)`);
+  console.log(`🚀 WARGAKU REST API SERVER ONLINE`);
   console.log(`📡 URL: http://0.0.0.0:${PORT}`);
   console.log(`🗄️  Connected to DB: ${process.env.DB_HOST || '103.134.221.200'}:5432`);
-  console.log(`🔐 Auth: JWT + Multi-Tenant Isolation`);
-  console.log(`⏰ Cron: Auto-billing hourly Asia/Jakarta`);
+  console.log(`⏰ Cron: Auto-billing check hourly Asia/Jakarta`);
   console.log(`===============================================`);
 });

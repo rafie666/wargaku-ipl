@@ -19,29 +19,29 @@ export default function Hero({ onOpenQr }) {
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-900/90 border border-emerald-500/30 text-emerald-200 text-xs sm:text-sm font-medium backdrop-blur-sm shadow-inner">
               <span className="w-2 h-2 rounded-full bg-limeAccent animate-pulse" />
-              <span>Aplikasi Resmi Warga RT / RW Lingkungan</span>
+              <span>Platform Multi-Komplek • Perumahan & RT/RW Seluruh Indonesia</span>
             </div>
 
             {/* Main Headline */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
-              Satu Aplikasi untuk <br className="hidden sm:inline" />
+              Satu Aplikasi IPL untuk <br className="hidden sm:inline" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-limeAccent to-emerald-200">
-                Iuran, Kas Lingkungan,
+                Semua Komplek & Lingkungan
               </span>{' '}
               <br className="hidden sm:inline" />
-              & Administrasi Warga.
+              Warga di Indonesia.
             </h1>
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg text-emerald-100/90 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              Bebas repot bayar IPL bulanan lewat QRIS dan Transfer Bank. Nikmati transparansi kas RT/RW terbuka, kartu identitas digital penghuni, tombol darurat pos satpam, serta layanan surat online tanpa antri.
+              Solusi cerdas kelola iuran lingkungan (IPL), transparansi kas terbuka, kartu identitas digital penghuni, hingga respon darurat satpam. Dirancang mandiri dan siap digunakan langsung oleh perumahan, klaster, apartemen, maupun RT/RW di mana pun.
             </p>
 
             {/* Download CTA Group */}
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <a
-                href="/wargaku-ipl.apk"
-                download="wargaku-ipl.apk"
+                href="/ipl-warga.apk"
+                download="ipl-warga.apk"
                 className="w-full sm:w-auto bg-limeAccent hover:bg-[#c4e62a] active:scale-95 text-darkForest font-extrabold px-6 py-4 rounded-2xl shadow-elevated transition-all flex items-center justify-center gap-3 text-base group"
               >
                 <div className="w-8 h-8 rounded-xl bg-darkForest/10 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -49,7 +49,7 @@ export default function Hero({ onOpenQr }) {
                 </div>
                 <div className="text-left">
                   <div className="text-xs font-semibold text-darkForest/80 uppercase tracking-wider">Unduh Sekarang</div>
-                  <div className="text-base font-black leading-none">Download APK Android</div>
+                  <div className="text-base font-black leading-none">Download APK IPL WARGA</div>
                 </div>
               </a>
 
@@ -65,11 +65,11 @@ export default function Hero({ onOpenQr }) {
             {/* Spec & Security badge */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-emerald-200/80 pt-1">
               <span className="flex items-center gap-1.5 font-mono">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> Ukuran: ~28.4 MB
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> Ukuran: ~48.7 MB
               </span>
               <span className="hidden sm:inline">•</span>
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-limeAccent" /> Resmi & Bebas Iklan
+                <ShieldCheck className="w-4 h-4 text-limeAccent" /> Multi-Komplek & Skalalabel
               </span>
               <span className="hidden sm:inline">•</span>
               <span>OS: Android 7.0+</span>
@@ -79,15 +79,15 @@ export default function Hero({ onOpenQr }) {
             <div className="pt-4 border-t border-emerald-800/60 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs text-emerald-100">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-limeAccent shrink-0" />
+                <span>Multi-Komplek Mandiri</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-limeAccent shrink-0" />
                 <span>Bayar QRIS & E-Kuitansi</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-limeAccent shrink-0" />
                 <span>Transparansi Kas Riil</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-limeAccent shrink-0" />
-                <span>Kartu Digital Warga</span>
               </div>
             </div>
 

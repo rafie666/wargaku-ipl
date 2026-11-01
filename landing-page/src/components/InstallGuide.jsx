@@ -5,7 +5,7 @@ const STEPS = [
   {
     step: '1',
     title: 'Unduh File APK',
-    desc: 'Tekan tombol "Download APK" di website ini. Tunggu hingga proses unduhan file wargaku-ipl.apk (~48 MB) selesai.',
+    desc: 'Tekan tombol "Download APK" di website ini. Tunggu hingga proses unduhan file ipl-warga.apk (~48.7 MB) selesai.',
     icon: Download,
     tip: 'Penyimpanan ponsel Anda hanya membutuhkan ruang sekitar ~60 MB.',
   },
@@ -14,7 +14,7 @@ const STEPS = [
     title: 'Buka File Unduhan',
     desc: 'Buka panel notifikasi HP Anda lalu ketuk file yang baru diunduh, atau temukan file di aplikasi File Saya / Pengelola File > Unduhan (Downloads).',
     icon: FolderDown,
-    tip: 'Nama file: wargaku-ipl.apk',
+    tip: 'Nama file: ipl-warga.apk',
   },
   {
     step: '3',
@@ -26,9 +26,9 @@ const STEPS = [
   {
     step: '4',
     title: 'Selesai & Mulai Gunakan',
-    desc: 'Tekan "Instal" lalu tunggu beberapa detik hingga selesai. Buka Wargaku IPL dan masuk menggunakan akun yang telah disiapkan RT Anda.',
+    desc: 'Tekan "Instal" lalu tunggu beberapa detik hingga selesai. Buka IPL WARGA dan masuk menggunakan akun atau daftarkan komplek Anda.',
     icon: CheckCircle2,
-    tip: 'Belum punya akun? Cukup hubungi pengurus RT Anda.',
+    tip: 'Dapat digunakan untuk berbagai komplek dan perumahan di Indonesia.',
   },
 ];
 
@@ -46,7 +46,7 @@ export default function InstallGuide() {
             Cara Mudah Pasang Aplikasi di HP Android Anda
           </h2>
           <p className="text-base sm:text-lg text-slate-600">
-            Hanya butuh waktu kurang dari 2 menit. Ikuti 4 langkah sederhana berikut untuk memasang aplikasi Wargaku IPL di perangkat Anda:
+            Hanya butuh waktu kurang dari 2 menit. Ikuti 4 langkah sederhana berikut untuk memasang aplikasi IPL WARGA di perangkat Anda:
           </p>
         </div>
 

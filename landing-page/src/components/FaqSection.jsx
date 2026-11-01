@@ -3,28 +3,28 @@ import { ChevronDown, HelpCircle, MessageCircle, ArrowRight } from 'lucide-react
 
 const FAQS = [
   {
-    q: 'Apakah aplikasi Wargaku IPL resmi dan aman dipasang di ponsel Android saya?',
-    a: 'Ya, 100% resmi dan aman. Wargaku IPL dikembangkan khusus untuk lingkungan RT/RW dan diverifikasi langsung oleh pengurus. Aplikasi ini tidak mengandung iklan, tidak mencuri data kontak/file pribadi, dan hanya meminta izin yang relevan (seperti penyimpanan untuk menyimpan e-kuitansi dan kamera untuk memotret bukti transfer).',
+    q: 'Apakah komplek atau perumahan kami bisa langsung bergabung menggunakan IPL WARGA?',
+    a: 'Tentu bisa! IPL WARGA dirancang dengan arsitektur multi-tenant (multi-komplek) yang terbuka secara nasional. Pengurus dari perumahan mandiri, klaster, townhouse, apartemen, maupun RT/RW mana pun dapat langsung mendaftarkan lingkungan mereka, mengatur tarif IPL, dan mengundang warganya.',
   },
   {
-    q: 'Bagaimana cara saya mendapatkan username dan kata sandi untuk login?',
-    a: 'Data seluruh warga terdaftar telah disiapkan oleh admin RT/RW Anda berdasarkan nomor unit rumah (misalnya Blok B-12 / No. 04). Hubungi pengurus RT Anda atau periksa pengumuman di grup WhatsApp warga untuk menerima kredensial akun perdana Anda.',
+    q: 'Apakah aplikasi IPL WARGA resmi, aman, dan bebas dari iklan komersial?',
+    a: 'Ya, 100% resmi, aman, dan bebas dari iklan. IPL WARGA fokus murni pada utilitas tata kelola lingkungan warga. Seluruh data kependudukan, transaksi, dan bukti bayar dienkripsi serta tersimpan aman di server terisolasi.',
   },
   {
-    q: 'Mengapa aplikasi diunduh langsung dalam bentuk file APK, bukan dari Google Play Store?',
-    a: 'Penggunaan APK mandiri memungkinkan pembaruan fitur, perbaikan cepat, dan sinkronisasi kebutuhan lokal lingkungan dapat dilakukan seketika tanpa tertahan antrean verifikasi Play Store. File APK ini adalah build produksi resmi (Release APK).',
+    q: 'Bagaimana cara warga mulai login dan mengakses data kompleknya?',
+    a: 'Warga dapat masuk menggunakan nomor ponsel atau akun yang didaftarkan oleh pengurus perumahan/RT setempat. Setelah login, seluruh informasi blok rumah, tagihan IPL, dan arus kas komplek langsung tampil otomatis.',
   },
   {
-    q: 'Bagaimana jika ada warga lansia yang kesulitan menggunakan smartphone?',
-    a: 'Sistem Wargaku IPL bersifat inklusif. Warga lansia yang lebih nyaman bertransaksi tunai tetap dapat menitipkan iuran ke petugas rukun tetangga. Bendahara akan menginput bukti bayar ke sistem, sehingga data kas tetap tercatat 100% transparan dan akuntabel.',
+    q: 'Bagaimana jika seorang warga memiliki lebih dari satu rumah/unit di komplek berbeda?',
+    a: 'IPL WARGA mendukung multi-komplek dan multi-unit dalam satu akun. Warga dapat dengan mudah beralih antar-unit rumah hanya dalam satu kali klik tanpa perlu keluar-masuk (logout) akun.',
   },
   {
     q: 'Metode pembayaran apa saja yang didukung untuk pembayaran IPL?',
-    a: 'Warga dapat membayar via QRIS (semua bank seperti BCA, Mandiri, BRI, BNI serta e-wallet seperti GoPay, OVO, Dana, ShopeePay), atau transfer antarbank ke rekening resmi lingkungan. Bukti transfer cukup diunggah ke aplikasi untuk verifikasi kilat.',
+    a: 'Warga dapat membayar via QRIS nasional (didukung semua bank seperti BCA, Mandiri, BRI, BNI serta e-wallet GoPay, OVO, Dana, ShopeePay), maupun transfer bank resmi pengurus komplek. Kuitansi digital lunas diterbitkan otomatis.',
   },
   {
-    q: 'Apakah warga bisa memantau aliran kas dan pengeluaran lingkungan?',
-    a: 'Ya! Salah satu keunggulan utama Wargaku IPL adalah fitur Transparansi Kas Terbuka. Setiap warga yang login dapat melihat total kas masuk, pengeluaran untuk keamanan, kebersihan sampah, perawatan taman, dan saldo sisa secara riil.',
+    q: 'Apakah warga dan pengurus bisa memantau laporan kas lingkungan secara terbuka?',
+    a: 'Ya! Fitur Transparansi Kas Terbuka menjadi fondasi utama IPL WARGA. Setiap warga dan pengurus dapat memantau rincian pemasukan, pengeluaran sampah/keamanan, dan sisa saldo kas secara transparan dan real-time.',
   },
 ];
 

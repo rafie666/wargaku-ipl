@@ -4,40 +4,40 @@ import { Users, UserCheck, Shield, Wallet, Check, Sparkles, Building, ChevronRig
 const ROLES_DATA = [
   {
     id: 'warga',
-    title: 'Untuk Warga Lingkungan',
+    title: 'Untuk Warga Komplek & Lingkungan',
     icon: Users,
     tagline: 'Praktis, Mandiri, & Selalu Terinformasi',
-    summary: 'Warga tidak perlu lagi menunggu didatangi petugas penagih atau bingung mencari kuitansi kertas yang hilang.',
+    summary: 'Warga komplek tidak perlu lagi menunggu didatangi penagih atau bingung mencari kuitansi fisik yang hilang.',
     points: [
-      'Cek tagihan IPL bulanan kapan saja dari smartphone.',
+      'Cek tagihan IPL bulanan kapan saja langsung dari ponsel.',
       'Bayar instan via QRIS semua bank & dompet digital (GoPay, OVO, Dana, ShopeePay).',
       'Unduh e-kuitansi sah resmi bernomor seri unik sebagai bukti pembayaran.',
-      'Kartu Identitas Digital Penghuni lengkap dengan unit rumah Blok / No.',
-      'Akses tombol darurat untuk meminta pertolongan darurat pos satpam.',
+      'Kartu Identitas Digital Penghuni lengkap dengan nama perumahan, blok, & nomor unit.',
+      'Akses tombol darurat terhubung langsung ke pos keamanan komplek.',
     ],
-    highlight: 'Warga dapat melihat ringkasan kas RT secara transparan demi akuntabilitas bersama.'
+    highlight: 'Warga dapat melihat ringkasan kas lingkungan secara transparan demi akuntabilitas bersama.'
   },
   {
     id: 'rt-rw',
-    title: 'Untuk Ketua RT & RW',
+    title: 'Untuk Pengurus Komplek & RT/RW',
     icon: UserCheck,
     tagline: 'Administrasi Rapi, Pantauan Wilayah Satu Dasbor',
-    summary: 'Ketua RT dan RW memiliki akses khusus untuk memantau status iuran per blok rumah dan menyetujui administrasi warga.',
+    summary: 'Pengurus komplek, klaster, dan RT/RW memiliki dasbor khusus untuk memantau status iuran per blok dan validasi warga.',
     points: [
-      'Peta visual status iuran warga (Lunas vs Belum Lunas) per blok.',
-      'Verifikasi dan terbitkan surat pengantar RT/RW secara digital.',
-      'Kirim pengumuman resmi (kerja bakti, fogging, rapat) langsung ke ponsel warga.',
-      'Manajemen data kependudukan dan status hunian (Tetap, Kontrak, Kosong).',
-      'Dual Mode: Pengurus yang juga warga dapat beralih peran dengan 1 klik.',
+      'Peta visual status iuran warga (Lunas vs Belum Lunas) per blok rumah.',
+      'Verifikasi dan terbitkan surat pengantar atau izin lingkungan secara digital.',
+      'Kirim pengumuman resmi (kerja bakti, jadwal sampah, rapat) langsung ke ponsel warga.',
+      'Manajemen data unit hunian komplek (Dihuni, Kontrak, Kosong).',
+      'Dual Mode: Pengurus yang juga penghuni dapat beralih peran instan dalam 1 klik.',
     ],
-    highlight: 'Data kependudukan wilayah aman, terpusat, dan mudah direkap saat dibutuhkan kelurahan.'
+    highlight: 'Data warga komplek aman, terpusat, dan siap digunakan kapan saja.'
   },
   {
     id: 'bendahara',
-    title: 'Untuk Bendahara',
+    title: 'Untuk Bendahara Komplek',
     icon: Wallet,
     tagline: 'Audit Finansial Akurat, Rekonsiliasi Otomatis',
-    summary: 'Beban pencatatan pembukuan manual ratusan warga berkurang drastis dengan sistem pencatatan otomatis.',
+    summary: 'Beban pencatatan pembukuan manual ratusan unit rumah berkurang drastis dengan sistem pencatatan otomatis.',
     points: [
       'Verifikasi bukti transfer bank warga dengan cepat.',
       'Buku kas otomatis terisi saat pembayaran terkonfirmasi.',
@@ -45,21 +45,21 @@ const ROLES_DATA = [
       'Rekapitulasi laporan kas bulanan siap cetak dalam hitungan detik.',
       'Audit log aktivitas finansial untuk mencegah selisih pembukuan.',
     ],
-    highlight: 'Tidak ada lagi stres pembukuan akhir bulan atau selisih nominal kas RT/RW.'
+    highlight: 'Tidak ada lagi stres pembukuan akhir bulan atau selisih nominal kas komplek.'
   },
   {
     id: 'satpam',
-    title: 'Keamanan & Satpam',
+    title: 'Keamanan & Satpam Pos Jaga',
     icon: Shield,
     tagline: 'Keamanan Lingkungan Lebih Siap Siaga',
-    summary: 'Mendukung operasional pos jaga keamanan lingkungan dengan transparansi jadwal dan respon darurat cepat.',
+    summary: 'Mendukung operasional pos jaga keamanan komplek dengan transparansi jadwal dan respon darurat cepat.',
     points: [
       'Jadwal piket ronda & shift satpam terjadwal jelas di aplikasi.',
-      'Notifikasi alarm darurat saat warga menekan tombol bantuan darurat.',
-      'Verifikasi identitas tamu atau pekerja renovasi melalui nomor unit rumah.',
-      'Daftar kontak darurat ambulans, polsek, dan damkar terdekat.',
+      'Notifikasi alarm darurat real-time saat warga menekan tombol bantuan darurat.',
+      'Verifikasi identitas tamu atau pekerja renovasi berdasarkan nomor blok & rumah.',
+      'Daftar kontak darurat terpusat (pos satpam, kepolisian, damkar, ambulans).',
     ],
-    highlight: 'Warga merasa tenang karena tim keamanan selalu terhubung secara digital 24 jam.'
+    highlight: 'Penghuni komplek tenang karena tim keamanan selalu tersambung secara digital 24 jam.'
   }
 ];
 
@@ -80,7 +80,7 @@ export default function RoleTabs() {
             Satu Aplikasi, Seluruh Kebutuhan Lingkungan Terhubung
           </h2>
           <p className="text-base sm:text-lg text-slate-600">
-            Wargaku IPL menyatukan seluruh elemen warga, perangkat RT, RW, bendahara, dan petugas keamanan dalam satu sistem yang harmonis.
+            IPL WARGA menyatukan seluruh elemen warga, pengurus klaster, ketua RT/RW, bendahara, dan pos keamanan dalam satu ekosistem multi-komplek yang harmonis.
           </p>
         </div>
 

@@ -3,7 +3,7 @@ import { Download, Smartphone, QrCode, ShieldCheck, Check, Copy, ExternalLink, H
 
 export default function DownloadSection({ onOpenQr }) {
   const [copiedSha, setCopiedSha] = useState(false);
-  const sampleSha = 'a8f34bc0991e2b55e414f45a8556828baf4e030697a7571b3e95d31860e4da55';
+  const sampleSha = '4b0e46396a148fa16c5cda714fcf810f2b65d6769c29a8f3fe737eea5b099590';
 
   const copyChecksum = () => {
     navigator.clipboard.writeText(sampleSha);
@@ -25,29 +25,38 @@ export default function DownloadSection({ onOpenQr }) {
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-800/80 border border-emerald-500/40 text-emerald-200 text-xs font-semibold">
                 <span className="w-2 h-2 rounded-full bg-limeAccent" />
-                <span>Rilis Resmi Android • Siap Dipasang</span>
+                <span>Rilis Resmi Android • Multi-Komplek Ready</span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-                Unduh Wargaku IPL <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-limeAccent to-white">
-                  Aplikasi Resmi Warga
-                </span>
-              </h2>
+              <div className="flex items-center gap-4 justify-center lg:justify-start">
+                <img 
+                  src="/logo.png" 
+                  alt="IPL WARGA Icon" 
+                  className="w-14 h-14 rounded-2xl object-cover shadow-lg border border-emerald-500/40"
+                />
+                <div>
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+                    Unduh IPL WARGA
+                  </h2>
+                  <div className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-limeAccent to-white text-lg sm:text-xl font-bold">
+                    Aplikasi Resmi Manajemen Multi-Komplek
+                  </div>
+                </div>
+              </div>
 
               <p className="text-emerald-100/90 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-                Bergabunglah dengan ratusan warga lain yang telah beralih ke pengelolaan lingkungan yang praktis, transparan, dan bebas repot.
+                Bergabunglah dengan pengurus dan warga dari berbagai komplek di seluruh Indonesia yang telah beralih ke pengelolaan lingkungan mandiri yang praktis, aman, dan 100% transparan.
               </p>
 
               {/* Big Download Button */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
                 <a
-                  href="/wargaku-ipl.apk"
-                  download="wargaku-ipl.apk"
+                  href="/ipl-warga.apk"
+                  download="ipl-warga.apk"
                   className="w-full sm:w-auto bg-limeAccent hover:bg-[#c5e729] active:scale-95 text-darkForest font-black px-8 py-4 rounded-2xl shadow-elevated transition-all flex items-center justify-center gap-3 text-base group"
                 >
                   <Download className="w-5 h-5 text-darkForest group-hover:scale-110 transition-transform" />
-                  <span>Download APK Android (28.4 MB)</span>
+                  <span>Download APK Android (48.7 MB)</span>
                 </a>
 
                 <button
@@ -63,11 +72,11 @@ export default function DownloadSection({ onOpenQr }) {
               <div className="pt-6 border-t border-emerald-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
                 <div>
                   <div className="text-[11px] text-emerald-300">Status</div>
-                  <div className="text-sm font-bold text-white">Rilis Stabil</div>
+                  <div className="text-sm font-bold text-white">Rilis Stabil v2.0</div>
                 </div>
                 <div>
                   <div className="text-[11px] text-emerald-300">Ukuran APK</div>
-                  <div className="text-sm font-bold font-mono text-white">28.4 MB</div>
+                  <div className="text-sm font-bold font-mono text-white">48.7 MB</div>
                 </div>
                 <div>
                   <div className="text-[11px] text-emerald-300">Target Sistem</div>
@@ -75,7 +84,7 @@ export default function DownloadSection({ onOpenQr }) {
                 </div>
                 <div>
                   <div className="text-[11px] text-emerald-300">Lisensi</div>
-                  <div className="text-sm font-bold text-white">Resmi Warga</div>
+                  <div className="text-sm font-bold text-white">Multi-Komplek</div>
                 </div>
               </div>
 

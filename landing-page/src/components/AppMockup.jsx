@@ -54,7 +54,7 @@ export default function AppMockup() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[10px] text-emerald-300 font-semibold tracking-wider uppercase">Wilayah RT 03 / RW 08</span>
+                    <span className="text-[10px] text-emerald-300 font-semibold tracking-wider uppercase">Cluster Puri Harmony • RT 03/08</span>
                     <span className="w-1.5 h-1.5 rounded-full bg-limeAccent" />
                   </div>
                   <h3 className="text-base font-bold text-white tracking-tight">Bpk. Hendra Pratama</h3>

@@ -7,8 +7,8 @@ export default function QrModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   const downloadUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/wargaku-ipl.apk`
-    : 'https://wargaku-ipl.local/wargaku-ipl.apk';
+    ? `${window.location.origin}/ipl-warga.apk`
+    : 'https://wargaku-ipl.local/ipl-warga.apk';
 
   const copyUrl = () => {
     navigator.clipboard.writeText(downloadUrl);
@@ -31,15 +31,17 @@ export default function QrModal({ isOpen, onClose }) {
           <X className="w-5 h-5" />
         </button>
 
-        <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-4 border border-emerald-100 shadow-sm">
-          <Smartphone className="w-6 h-6" />
-        </div>
+        <img 
+          src="/logo.png" 
+          alt="Logo IPL WARGA" 
+          className="w-14 h-14 rounded-2xl object-cover mx-auto mb-3 shadow-md border border-emerald-500/30"
+        />
 
         <h3 className="text-xl font-bold text-slate-900">
-          Scan QR untuk Unduh APK
+          Scan QR Unduh IPL WARGA
         </h3>
         <p className="text-xs text-slate-500 mt-1 mb-6">
-          Arahkan kamera ponsel Android Anda ke kode di bawah untuk mengunduh langsung ke perangkat.
+          Arahkan kamera ponsel Android Anda ke kode di bawah untuk mengunduh aplikasi IPL WARGA langsung ke HP.
         </p>
 
         {/* QR Code Graphic Frame */}
@@ -135,12 +137,12 @@ export default function QrModal({ isOpen, onClose }) {
         {/* Action button inside modal */}
         <div className="mt-6 flex gap-3">
           <a
-            href="/wargaku-ipl.apk"
-            download="wargaku-ipl.apk"
+            href="/ipl-warga.apk"
+            download="ipl-warga.apk"
             className="flex-1 bg-limeAccent hover:bg-[#c2e22f] text-darkForest font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-xs shadow-sm"
           >
             <Download className="w-4 h-4 text-darkForest" />
-            <span>Download ke Komputer</span>
+            <span>Download ke Perangkat</span>
           </a>
           <button
             onClick={onClose}

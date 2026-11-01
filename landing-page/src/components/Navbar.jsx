@@ -24,13 +24,20 @@ export default function Navbar({ onOpenQr }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Brand */}
-          <a href="#" className="flex flex-col group">
-            <span className={`text-xl font-extrabold tracking-tight ${scrolled ? 'text-slate-900' : 'text-white'}`}>
-              Wargaku<span className="text-emerald-500">IPL</span>
-            </span>
-            <span className={`text-xs ${scrolled ? 'text-slate-500' : 'text-emerald-200/80'}`}>
-              Sistem Resmi Warga & RT/RW
-            </span>
+          <a href="#" className="flex items-center gap-2.5 group">
+            <img 
+              src="/logo.png" 
+              alt="Logo IPL WARGA" 
+              className="w-9 h-9 rounded-xl object-cover shadow-sm border border-emerald-500/30 group-hover:scale-105 transition-transform" 
+            />
+            <div className="flex flex-col">
+              <span className={`text-xl font-extrabold tracking-tight leading-none ${scrolled ? 'text-slate-900' : 'text-white'}`}>
+                IPL<span className="text-emerald-500">WARGA</span>
+              </span>
+              <span className={`text-[10px] tracking-wide font-medium mt-0.5 ${scrolled ? 'text-slate-500' : 'text-emerald-200/80'}`}>
+                Platform Multi-Komplek & RT/RW
+              </span>
+            </div>
           </a>
 
           {/* Desktop Nav Links */}
@@ -85,8 +92,8 @@ export default function Navbar({ onOpenQr }) {
             </button>
 
             <a
-              href="/wargaku-ipl.apk"
-              download="wargaku-ipl.apk"
+              href="/ipl-warga.apk"
+              download="ipl-warga.apk"
               className="bg-limeAccent hover:bg-[#c2e22f] text-darkForest text-xs font-bold px-4 py-2 rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-2 active:scale-95"
             >
               <Download className="w-3.5 h-3.5 text-darkForest" />
@@ -97,8 +104,8 @@ export default function Navbar({ onOpenQr }) {
           {/* Mobile Menu Toggle Button */}
           <div className="md:hidden flex items-center gap-2">
             <a
-              href="/wargaku-ipl.apk"
-              download="wargaku-ipl.apk"
+              href="/ipl-warga.apk"
+              download="ipl-warga.apk"
               className="bg-limeAccent text-darkForest text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm"
             >
               <Download className="w-3.5 h-3.5" />
@@ -157,8 +164,8 @@ export default function Navbar({ onOpenQr }) {
 
             <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
               <a
-                href="/wargaku-ipl.apk"
-                download="wargaku-ipl.apk"
+                href="/ipl-warga.apk"
+                download="ipl-warga.apk"
                 className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-center flex items-center justify-center gap-2 shadow-sm"
               >
                 <Download className="w-4 h-4" />

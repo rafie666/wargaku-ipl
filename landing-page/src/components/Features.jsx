@@ -11,57 +11,59 @@ import {
   Receipt,
   Users,
   Eye,
-  Smartphone
+  Smartphone,
+  Building2,
+  Globe2
 } from 'lucide-react';
 
 const FEATURE_LIST = [
   {
+    id: 'multi-komplek',
+    icon: Building2,
+    iconBg: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    title: 'Multi-Komplek Seluruh Indonesia',
+    desc: 'Dapat digunakan mandiri oleh perumahan, klaster, apartemen, hingga RT/RW di kota mana pun. Setiap komplek memiliki aturan iuran dan basis data terpisah yang aman.',
+    badge: 'Multi-Tenant Mandiri',
+  },
+  {
     id: 'ipl-payment',
     icon: CreditCard,
-    iconBg: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    iconBg: 'bg-blue-50 text-blue-700 border-blue-200',
     title: 'Pembayaran IPL & E-Kuitansi Sah',
     desc: 'Bayar iuran kebersihan, keamanan, dan fasum via QRIS nasional atau Transfer Bank. Bukti lunas diterbitkan otomatis dan tersimpan abadi di ponsel Anda.',
     badge: 'Otomatis & Akurat',
-  },
-  {
-    id: 'virtual-card',
-    icon: QrCode,
-    iconBg: 'bg-blue-50 text-blue-700 border-blue-200',
-    title: 'Kartu Digital Warga (Virtual ID)',
-    desc: 'Identitas resmi penghuni lingkungan dengan kode unik dan format rumah baku (contoh: Blok B-12 / No. 04). Praktis ditunjukkan ke pos satpam saat verifikasi.',
-    badge: 'Format Standar',
   },
   {
     id: 'transparency',
     icon: Eye,
     iconBg: 'bg-amber-50 text-amber-700 border-amber-200',
     title: 'Transparansi Kas Lingkungan',
-    desc: 'Setiap warga berhak tahu alokasi dana iuran. Pantau arus kas masuk, pengeluaran sampah, perbaikan fasilitas, dan saldo kas RT/RW secara terbuka dan real-time.',
+    desc: 'Warga komplek berhak tahu alokasi dana iuran. Pantau arus kas masuk, pengeluaran sampah, perbaikan fasilitas, dan saldo kas pengurus secara terbuka dan real-time.',
     badge: '100% Terbuka',
+  },
+  {
+    id: 'virtual-card',
+    icon: QrCode,
+    iconBg: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+    title: 'Kartu Digital Warga (Virtual ID)',
+    desc: 'Identitas resmi penghuni komplek dengan kode unik dan format blok rumah baku (misal: Blok B-12 / No. 04). Praktis ditunjukkan ke pos satpam saat verifikasi tamu.',
+    badge: 'Format Standar',
   },
   {
     id: 'emergency',
     icon: ShieldAlert,
     iconBg: 'bg-rose-50 text-rose-700 border-rose-200',
     title: 'Tombol Darurat & Pos Satpam',
-    desc: 'Butuh bantuan cepat saat insiden medis, kebakaran, atau kecurigaan keamanan? Hubungi pos jaga satpam kompleks dan kontak darurat dalam satu sentuhan.',
-    badge: 'Respon Cepat',
+    desc: 'Butuh bantuan cepat saat insiden medis, kebakaran, atau ancaman keamanan? Hubungi pos jaga satpam komplek dan kontak darurat dalam satu sentuhan.',
+    badge: 'Respon Kilat',
   },
   {
     id: 'surat-rt',
     icon: FileText,
     iconBg: 'bg-purple-50 text-purple-700 border-purple-200',
-    title: 'Layanan Surat RT & RW Digital',
-    desc: 'Urus surat pengantar domisili, izin renovasi, atau SKCK tanpa antri dan tanpa mengganggu waktu istirahat ketua RT. Cetak dan unduh dokumen langsung dari HP.',
-    badge: 'Bebas Antri',
-  },
-  {
-    id: 'pengaduan',
-    icon: Bell,
-    iconBg: 'bg-teal-50 text-teal-700 border-teal-200',
-    title: 'Pengaduan Masalah Fasilitas Umum',
-    desc: 'Lampu jalan mati, got mampet, atau fasilitas taman rusak? Foto langsung dan kirim laporan pengaduan. Pantau progres perbaikan dari pengurus lingkungan.',
-    badge: 'Real-Time Update',
+    title: 'Layanan Surat & Pengaduan Fasum',
+    desc: 'Ajukan perizinan surat pengantar, lapor fasilitas jalan/lampu rusak dengan foto, dan pantau progres perbaikan oleh pengurus komplek tanpa birokrasi rumit.',
+    badge: 'Bebas Birokrasi',
   },
 ];
 
@@ -76,10 +78,10 @@ export default function Features() {
             Fitur Utama Aplikasi
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Kemudahan Bertetangga yang Modern, Rapi, & Transparan
+            Tata Kelola Lingkungan Modern, Transparan, & Terbuka Global
           </h2>
           <p className="text-base sm:text-lg text-slate-600">
-            Wargaku IPL dirancang dari kebutuhan nyata warga dan pengurus lingkungan. Semua urusan iuran dan administrasi terselesaikan tanpa repot.
+            IPL WARGA diciptakan untuk menjawab kebutuhan riil warga dan pengurus perumahan. Dari cluster kecil hingga kawasan pemukiman besar, semua iuran tertata rapi.
           </p>
         </div>
 

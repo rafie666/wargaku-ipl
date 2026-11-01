@@ -1,0 +1,46 @@
+#!/usr/bin/expect -f
+set timeout 60
+set server_user "adminapi"
+set server_host "103.134.221.201"
+set server_pass "@dminApi2026"
+
+spawn scp -o StrictHostKeyChecking=no /home/adly/Projects/ipl/backend-api/server.js ${server_user}@${server_host}:~/server.js.new
+expect {
+    "password:" {
+        send "${server_pass}\r"
+        exp_continue
+    }
+    "100%" {
+        puts "\n✅ Upload complete"
+    }
+    timeout {
+        puts "\n❌ Upload timeout"
+        exit 1
+    }
+}
+
+spawn ssh -o StrictHostKeyChecking=no ${server_user}@${server_host}
+expect "password:"
+send "${server_pass}\r"
+
+expect "$ "
+send "pm2 list\r"
+
+expect "$ "
+send "if [ -d ~/backend-api ]; then cp ~/server.js.new ~/backend-api/server.js; fi\r"
+
+expect "$ "
+send "if [ -d ~/wargaku-api ]; then cp ~/server.js.new ~/wargaku-api/server.js; fi\r"
+
+expect "$ "
+send "rm -f ~/server.js.new\r"
+
+expect "$ "
+send "pm2 reload wargaku-api --update-env\r"
+
+expect "$ "
+send "pm2 status wargaku-api\r"
+
+expect "$ "
+send "exit\r"
+expect eof
