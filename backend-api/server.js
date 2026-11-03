@@ -5,6 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const cron = require('node-cron');
+const crypto = require('crypto');
 require('dotenv').config();
 
 const app = express();
@@ -36,7 +37,12 @@ pool.on('error', (err) => {
 
 // 2. Middleware
 app.use(cors({ origin: '*' }));
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({
+  limit: '50mb',
+  verify: (req, res, buf) => {
+    req.rawBody = buf ? buf.toString('utf8') : '';
+  }
+}));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Static uploads directory
@@ -541,7 +547,6 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
 // 8.5. EXPO UPDATES (OTA) PROTOCOL V1
 const FormData = require('form-data');
-const crypto = require('crypto');
 
 const UPDATES_DIR = path.join(__dirname, 'updates');
 const CURRENT_UPDATE_DIR = path.join(UPDATES_DIR, 'current');
@@ -768,6 +773,308 @@ app.post("/api/rpc/:fn", async (req, res) => {
     console.error(`[RPC ${fn} ERROR]`, err.message);
     return res.status(500).json({ error: err.message });
   }
+});
+
+// ============================================================================
+// 12. Moota Webhook Integration (Verifikasi Pembayaran Bank Otomatis)
+// ============================================================================
+
+/**
+ * Validasi header Signature Moota dengan MOOTA_WEBHOOK_SECRET
+ */
+function verifyMootaSignature(req) {
+  const secret = (process.env.MOOTA_WEBHOOK_SECRET || '').trim();
+
+  // Jika secret belum diisi, izinkan dengan peringatan untuk kemudahan initial setup/testing
+  if (!secret || secret === 'isi_secret_dari_atasan') {
+    console.warn('[MOOTA WEBHOOK] ⚠️  MOOTA_WEBHOOK_SECRET belum dikonfigurasi di .env! Melewati verifikasi signature (mode permissive).');
+    return { valid: true, warning: 'SECRET_NOT_CONFIGURED' };
+  }
+
+  const signatureHeader = req.headers['signature'] ||
+                          req.headers['x-moota-signature'] ||
+                          req.headers['authorization'];
+
+  if (!signatureHeader) {
+    return { valid: false, reason: 'Header Signature tidak ditemukan pada request.' };
+  }
+
+  const cleanSignature = signatureHeader.replace(/^Bearer\s+/i, '').trim();
+
+  // 1. Cek kecocokan token langsung (direct token)
+  if (cleanSignature === secret) {
+    return { valid: true, method: 'direct_token' };
+  }
+
+  // 2. Cek HMAC-SHA256 dari raw payload
+  const rawPayload = req.rawBody || JSON.stringify(req.body);
+  const calculatedHmac = crypto.createHmac('sha256', secret).update(rawPayload).digest('hex');
+
+  if (calculatedHmac.toLowerCase() === cleanSignature.toLowerCase()) {
+    return { valid: true, method: 'hmac_sha256' };
+  }
+
+  // 3. Fallback: HMAC-SHA256 dari JSON.stringify(req.body) jika rawBody berbeda format
+  const fallbackHmac = crypto.createHmac('sha256', secret).update(JSON.stringify(req.body)).digest('hex');
+  if (fallbackHmac.toLowerCase() === cleanSignature.toLowerCase()) {
+    return { valid: true, method: 'hmac_sha256_fallback' };
+  }
+
+  return {
+    valid: false,
+    reason: `Signature mismatch. Diterima: ${cleanSignature.substring(0, 10)}..., Dihitung: ${calculatedHmac.substring(0, 10)}...`
+  };
+}
+
+/**
+ * Pemrosesan mutasi bank dari Moota di latar belakang (asynchronous)
+ */
+async function processMootaMutations(mutations) {
+  if (!Array.isArray(mutations)) {
+    mutations = [mutations];
+  }
+
+  for (const item of mutations) {
+    try {
+      if (!item || typeof item !== 'object') continue;
+
+      const mutationId = String(item.id || item.mutation_id || `mut-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`);
+      const rawAmount = item.amount || item.nominal || 0;
+      const amount = Math.round(Number(rawAmount));
+      const type = (item.type || 'CR').toUpperCase(); // CR = Credit / Uang Masuk, DB = Debit / Uang Keluar
+      const description = item.description || item.keterangan || item.note || '';
+      const date = item.date || new Date().toISOString();
+      const accountNumber = item.account_number || item.bank_id || '';
+
+      console.log(`[MOOTA MUTATION] ID: ${mutationId} | Tipe: ${type} | Nominal: Rp ${amount.toLocaleString('id-ID')} | Berita: "${description}"`);
+
+      // 1. Simpan ke wargaku_moota_mutations (mencegah double-processing)
+      const existing = await pool.query(
+        'SELECT id FROM public.wargaku_moota_mutations WHERE id = $1',
+        [mutationId]
+      );
+
+      if (existing.rows.length > 0) {
+        console.log(`[MOOTA MUTATION] Mutasi ${mutationId} sudah pernah diproses. Lewati.`);
+        continue;
+      }
+
+      await pool.query(
+        `INSERT INTO public.wargaku_moota_mutations (id, data, updated_at)
+         VALUES ($1, $2, NOW())
+         ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
+        [mutationId, JSON.stringify({ ...item, processed_at: new Date().toISOString() })]
+      );
+
+      // Hanya proses mutasi uang masuk (Credit) dengan nominal > 0
+      if (type !== 'CR' || amount <= 0) {
+        console.log(`[MOOTA MUTATION] Tipe bukan CR (uang masuk), tidak diproses ke tagihan.`);
+        continue;
+      }
+
+      // 2. Cari tagihan belum lunas yang cocok
+      let matchedBill = null;
+      let matchedSource = null; // 'wargaku_tagihan' atau 'wargaku_tagihan_events'
+
+      // A. Cek di tabel wargaku_tagihan
+      try {
+        const pendingBills = await pool.query(
+          `SELECT id, komplek_id, resident_id, periode, total_amount, status
+           FROM public.wargaku_tagihan
+           WHERE status NOT IN ('Lunas', 'lunas', 'PAID', 'paid')
+           ORDER BY created_at DESC LIMIT 100`
+        );
+
+        for (const bill of pendingBills.rows) {
+          const billTotal = Math.round(Number(bill.total_amount || 0));
+          if (billTotal === amount) {
+            matchedBill = bill;
+            matchedSource = 'wargaku_tagihan';
+            console.log(`[MOOTA MATCH] Tagihan cocok exact nominal: Bill ID ${bill.id} (Rp ${billTotal})`);
+            break;
+          }
+          // Toleransi kode unik 3 digit (1-999)
+          const diff = amount - billTotal;
+          if (diff > 0 && diff < 1000) {
+            matchedBill = bill;
+            matchedSource = 'wargaku_tagihan';
+            console.log(`[MOOTA MATCH] Tagihan cocok kode unik (+${diff}): Bill ID ${bill.id}`);
+            break;
+          }
+        }
+      } catch (errTagihan) {
+        console.warn('[MOOTA CHECK TAGIHAN WARN]', errTagihan.message);
+      }
+
+      // B. Fallback: Cek di wargaku_tagihan_events (jika menggunakan JSONB storage)
+      if (!matchedBill) {
+        try {
+          const eventBills = await pool.query(
+            `SELECT id, data FROM public.wargaku_tagihan_events
+             WHERE (data->>'status' NOT IN ('Lunas', 'lunas', 'PAID', 'paid') OR data->>'status' IS NULL)
+             ORDER BY updated_at DESC LIMIT 100`
+          );
+
+          for (const ev of eventBills.rows) {
+            const evData = ev.data || {};
+            const evTotal = Math.round(Number(evData.total || evData.total_amount || 0));
+            if (evTotal === amount) {
+              matchedBill = { ...evData, id: ev.id };
+              matchedSource = 'wargaku_tagihan_events';
+              console.log(`[MOOTA MATCH] Tagihan event cocok exact: ID ${ev.id}`);
+              break;
+            }
+            const diff = amount - evTotal;
+            if (diff > 0 && diff < 1000) {
+              matchedBill = { ...evData, id: ev.id };
+              matchedSource = 'wargaku_tagihan_events';
+              console.log(`[MOOTA MATCH] Tagihan event cocok kode unik (+${diff}): ID ${ev.id}`);
+              break;
+            }
+          }
+        } catch (errEv) {
+          console.warn('[MOOTA CHECK EVENT WARN]', errEv.message);
+        }
+      }
+
+      // 3. Eksekusi pelunasan jika tagihan ditemukan
+      if (matchedBill) {
+        const paymentEvidence = {
+          source: 'moota_webhook',
+          mutation_id: mutationId,
+          bank_account: accountNumber,
+          amount: amount,
+          description: description,
+          transaction_date: date,
+          verified_auto: true,
+          verified_at: new Date().toISOString()
+        };
+
+        if (matchedSource === 'wargaku_tagihan') {
+          await pool.query(
+            `UPDATE public.wargaku_tagihan
+             SET status = 'Lunas',
+                 verified_at = NOW(),
+                 payment_evidence = $1,
+                 updated_at = NOW()
+             WHERE id = $2`,
+            [JSON.stringify(paymentEvidence), matchedBill.id]
+          );
+        } else if (matchedSource === 'wargaku_tagihan_events') {
+          const updatedData = {
+            ...matchedBill,
+            status: 'Lunas',
+            verified_at: new Date().toISOString(),
+            payment_evidence: paymentEvidence
+          };
+          await pool.query(
+            `UPDATE public.wargaku_tagihan_events
+             SET data = $1, updated_at = NOW()
+             WHERE id = $2`,
+            [JSON.stringify(updatedData), matchedBill.id]
+          );
+        }
+
+        console.log(`[MOOTA SUCCESS] ✅ Tagihan ID ${matchedBill.id} sukses LUNAS via Moota!`);
+
+        // 4. Catat otomatis ke buku kas masuk (wargaku_kas)
+        try {
+          const kasId = crypto.randomUUID();
+          const komplekId = matchedBill.komplek_id || '76bf56cc-bafb-4d06-a701-62a520bce398';
+          await pool.query(
+            `INSERT INTO public.wargaku_kas (id, komplek_id, tanggal, tipe, kategori, nominal, keterangan, created_at)
+             VALUES ($1, $2, CURRENT_DATE, 'masuk', 'IPL', $3, $4, NOW())`,
+            [
+              kasId,
+              komplekId,
+              amount,
+              `Pembayaran Otomatis Moota: Tagihan Periode ${matchedBill.periode || ''} (ID Mutasi: ${mutationId}, Rekening: ${accountNumber})`
+            ]
+          );
+          console.log(`[MOOTA KAS] ✅ Kas masuk tercatat otomatis Rp ${amount}`);
+        } catch (kasErr) {
+          console.warn('[MOOTA KAS WARN]', kasErr.message);
+        }
+
+        // 5. Buat notifikasi warga otomatis
+        try {
+          const notifId = `notif-moota-${Date.now()}`;
+          const komplekId = matchedBill.komplek_id || '76bf56cc-bafb-4d06-a701-62a520bce398';
+          const notifData = {
+            id: notifId,
+            komplek_id: komplekId,
+            recipient_id: matchedBill.resident_id || matchedBill.wargaId,
+            title: 'Pembayaran IPL Terverifikasi Otomatis',
+            message: `Pembayaran iuran IPL sebesar Rp ${amount.toLocaleString('id-ID')} telah berhasil diterima dan diverifikasi secara otomatis oleh sistem perbankan.`,
+            type: 'PAYMENT_SUCCESS',
+            tagihan_id: matchedBill.id,
+            read: false,
+            created_at: new Date().toISOString()
+          };
+          await pool.query(
+            `INSERT INTO public.wargaku_notifications (id, data, updated_at)
+             VALUES ($1, $2, NOW())
+             ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
+            [notifId, JSON.stringify(notifData)]
+          );
+          console.log(`[MOOTA NOTIF] ✅ Notifikasi pembayaran sukses dibuat.`);
+        } catch (notifErr) {
+          console.warn('[MOOTA NOTIF WARN]', notifErr.message);
+        }
+      } else {
+        console.log(`[MOOTA UNMATCHED] Mutasi Rp ${amount} (${description}) tidak cocok dengan tagihan pending manapun. Disimpan di arsip mutasi.`);
+      }
+
+    } catch (err) {
+      console.error('[MOOTA PROCESS ITEM ERROR]', err);
+    }
+  }
+}
+
+// Endpoint Info & Health Check Moota Webhook
+app.get(['/api/webhook/moota', '/api/moota/webhook'], (req, res) => {
+  res.json({
+    status: 'online',
+    service: 'Wargaku IPL - Moota Webhook Endpoint',
+    endpoint_url: `${getServerUrl(req)}/api/webhook/moota`,
+    secret_configured: !!(process.env.MOOTA_WEBHOOK_SECRET && process.env.MOOTA_WEBHOOK_SECRET !== 'isi_secret_dari_atasan'),
+    time: new Date().toISOString()
+  });
+});
+
+// Endpoint Utama POST Webhook Moota
+app.post(['/api/webhook/moota', '/api/moota/webhook'], async (req, res) => {
+  console.log(`[MOOTA WEBHOOK] 📥 Request masuk pada ${new Date().toISOString()}`);
+
+  // 1. Verifikasi Signature / Secret Token
+  const verification = verifyMootaSignature(req);
+  if (!verification.valid) {
+    console.error('[MOOTA WEBHOOK] ❌ Verifikasi gagal:', verification.reason);
+    return res.status(401).json({
+      status: 'error',
+      message: 'Invalid signature',
+      detail: verification.reason
+    });
+  }
+
+  // 2. Beri respon 200 OK secepat mungkin ke Moota (< 5 detik)
+  res.status(200).json({
+    status: 'success',
+    message: 'Moota webhook payload received successfully',
+    timestamp: new Date().toISOString()
+  });
+
+  // 3. Proses mutasi secara asinkron di latar belakang
+  const rawBody = req.body;
+  const mutations = Array.isArray(rawBody)
+    ? rawBody
+    : (Array.isArray(rawBody?.mutations) ? rawBody.mutations : (Array.isArray(rawBody?.data) ? rawBody.data : [rawBody]));
+
+  setImmediate(() => {
+    processMootaMutations(mutations).catch((err) => {
+      console.error('[MOOTA ASYNC PROCESS ERROR]', err);
+    });
+  });
 });
 
 // Start Server
