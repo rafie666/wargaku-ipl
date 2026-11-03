@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Download, Smartphone, Menu, X, ChevronRight, Globe, ExternalLink } from 'lucide-react';
+import glosindoLogo from '../assets/logo-glosindo.png';
 
 export default function Navbar({ onOpenQr }) {
   const [scrolled, setScrolled] = useState(false);
@@ -25,11 +26,13 @@ export default function Navbar({ onOpenQr }) {
         <div className="flex items-center justify-between">
           {/* Brand */}
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 group">
-            <img 
-              src="/logo.png" 
-              alt="Logo Glosindo IPL" 
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-contain shadow-sm border border-slate-200/30 group-hover:scale-105 transition-transform" 
-            />
+            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-white p-1 shadow-sm border border-slate-200/80 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <img 
+                src={glosindoLogo} 
+                alt="Logo Glosindo" 
+                className="h-full w-full object-contain" 
+              />
+            </div>
             <div className="flex flex-col">
               <span className={`text-lg sm:text-xl font-extrabold tracking-tight leading-none ${scrolled ? 'text-slate-900' : 'text-white'}`}>
                 GLOSINDO <span className="text-cyanAccent-500">IPL</span>

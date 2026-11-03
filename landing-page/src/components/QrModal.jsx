@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Copy, Check, Download, ExternalLink } from 'lucide-react';
+import glosindoLogo from '../assets/logo-glosindo.png';
 
 export default function QrModal({ isOpen, onClose }) {
   const [copied, setCopied] = useState(false);
@@ -31,11 +32,13 @@ export default function QrModal({ isOpen, onClose }) {
           <X className="w-5 h-5" />
         </button>
 
-        <img 
-          src="/logo.png" 
-          alt="Logo Glosindo IPL" 
-          className="w-14 h-14 rounded-2xl object-contain mx-auto mb-3 shadow-md border border-slate-200 bg-white p-1"
-        />
+        <div className="w-16 h-16 rounded-2xl bg-white p-1.5 shadow-md border border-slate-200 mx-auto mb-3 flex items-center justify-center">
+          <img 
+            src={glosindoLogo} 
+            alt="Logo Glosindo" 
+            className="w-full h-full object-contain" 
+          />
+        </div>
 
         <h3 className="text-xl font-bold text-slate-900">
           Scan QR Unduh GLOSINDO IPL

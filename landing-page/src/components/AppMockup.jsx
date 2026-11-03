@@ -18,6 +18,7 @@ import {
   Clock,
   Sparkles
 } from 'lucide-react';
+import glosindoLogo from '../assets/logo-glosindo.png';
 
 export default function AppMockup() {
   const [activeTab, setActiveTab] = useState('home');
@@ -68,10 +69,10 @@ export default function AppMockup() {
               <div className="mt-3.5 bg-gradient-to-br from-brand-900 via-brand-950 to-slate-950 p-3 sm:p-3.5 rounded-2xl border border-brand-700/50 shadow-elevated relative overflow-hidden text-white">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-4.5 rounded bg-gradient-to-r from-amber-400 to-amber-200 shadow-inner flex items-center justify-center">
-                      <div className="w-4 h-2.5 border border-amber-600/50 rounded-sm" />
+                    <div className="w-5 h-5 rounded-md bg-white p-0.5 flex items-center justify-center shrink-0">
+                      <img src={glosindoLogo} alt="Glosindo" className="w-full h-full object-contain" />
                     </div>
-                    <span className="text-[9px] tracking-widest text-cyanAccent-300 uppercase font-bold">KARTU DIGITAL GLOSINDO</span>
+                    <span className="text-[9px] tracking-widest text-cyanAccent-300 uppercase font-bold">KARTU WARGA GLOSINDO</span>
                   </div>
                   <span className="bg-brand-500/25 text-cyanAccent-300 text-[9px] font-bold px-2 py-0.5 rounded-full border border-brand-400/30">
                     WARGA TETAP

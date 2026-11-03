@@ -1,5 +1,6 @@
 import React from 'react';
 import { Download, ShieldCheck, Heart, QrCode, Sparkles, CheckCircle2, Globe, ExternalLink, Building } from 'lucide-react';
+import glosindoLogo from '../assets/logo-glosindo.png';
 
 export default function Footer({ onOpenQr }) {
   return (
@@ -60,11 +61,13 @@ export default function Footer({ onOpenQr }) {
           {/* Brand Info & Mission (Col 1-7) */}
           <div className="md:col-span-7 space-y-4">
             <div className="flex items-center gap-3">
-              <img 
-                src="/logo.png" 
-                alt="Logo Glosindo IPL" 
-                className="w-11 h-11 rounded-xl object-contain border border-slate-700 shadow-sm bg-white p-1"
-              />
+              <div className="w-11 h-11 rounded-xl bg-white p-1 shadow-sm border border-slate-700 flex items-center justify-center shrink-0">
+                <img 
+                  src={glosindoLogo} 
+                  alt="Logo Glosindo IPL" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div>
                 <span className="text-2xl font-black text-white tracking-tight leading-none">
                   GLOSINDO <span className="text-cyanAccent-400">IPL</span>

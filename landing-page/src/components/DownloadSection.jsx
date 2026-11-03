@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Download, Smartphone, QrCode, ShieldCheck, Check, Copy, ExternalLink } from 'lucide-react';
+import glosindoLogo from '../assets/logo-glosindo.png';
 
 export default function DownloadSection({ onOpenQr }) {
   const [copiedSha, setCopiedSha] = useState(false);
@@ -29,17 +30,19 @@ export default function DownloadSection({ onOpenQr }) {
               </div>
 
               <div className="flex items-center gap-3.5 sm:gap-4 justify-center lg:justify-start">
-                <img 
-                  src="/logo.png" 
-                  alt="Logo Glosindo IPL" 
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl object-contain shadow-lg border border-brand-600/40 bg-white p-1"
-                />
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white p-1.5 shadow-lg border border-brand-600/40 flex items-center justify-center shrink-0">
+                  <img 
+                    src={glosindoLogo} 
+                    alt="Logo Glosindo IPL" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
                 <div className="text-left">
                   <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-                    Unduh GLOSINDO IPL
+                    GLOSINDO IPL
                   </h2>
                   <div className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-cyanAccent-300 to-white text-base sm:text-xl font-bold">
-                    Aplikasi Resmi Manajemen Multi-Komplek
+                    Aplikasi Resmi PT Global Media Pratama Solusindo
                   </div>
                 </div>
               </div>

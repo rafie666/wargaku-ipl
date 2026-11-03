@@ -1,6 +1,7 @@
 import React from 'react';
 import { Download, Smartphone, ShieldCheck, CheckCircle2, ArrowDown, Globe, ExternalLink } from 'lucide-react';
 import AppMockup from './AppMockup';
+import glosindoLogo from '../assets/logo-glosindo.png';
 
 export default function Hero({ onOpenQr }) {
   return (
@@ -16,10 +17,12 @@ export default function Hero({ onOpenQr }) {
           {/* Left Column: Headlines & Download CTA */}
           <div className="lg:col-span-7 text-center lg:text-left space-y-5 sm:space-y-6">
             
-            {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-900/90 border border-brand-700/60 text-cyanAccent-200 text-xs sm:text-sm font-medium backdrop-blur-sm shadow-inner">
-              <span className="w-2 h-2 rounded-full bg-cyanAccent-400" />
-              <span>Multi-Tenant • Auto-Mutasi Moota • Peta Warga Interaktif</span>
+            {/* Glosindo Official Brand Badge */}
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md text-white shadow-sm">
+              <div className="w-6 h-6 rounded-lg bg-white p-0.5 flex items-center justify-center shrink-0">
+                <img src={glosindoLogo} alt="Logo Glosindo" className="w-full h-full object-contain" />
+              </div>
+              <span className="text-xs sm:text-sm font-bold tracking-wide">PT GLOBAL MEDIA PRATAMA SOLUSINDO</span>
             </div>
 
             {/* Main Headline */}
@@ -34,7 +37,7 @@ export default function Hero({ onOpenQr }) {
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg text-slate-200/90 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              Kelola iuran lingkungan (IPL) otomatis, transparansi arus kas terbuka, auto-verifikasi mutasi bank, kartu digital penghuni, dan koordinasi keamanan satpam terpadu dari <strong className="text-white font-semibold">Glosindo</strong>.
+              Kelola iuran lingkungan (IPL) otomatis, transparansi arus kas terbuka, auto-verifikasi mutasi bank, kartu digital penghuni, dan koordinasi keamanan satpam terpadu resmi dari <strong className="text-white font-semibold">GLOSINDO</strong>.
             </p>
 
             {/* Download & Demo CTA Group - Fully Touch & Mobile Ready */}
