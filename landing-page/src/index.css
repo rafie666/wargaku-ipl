@@ -5,12 +5,14 @@
 @layer base {
   body {
     @apply text-slate-800 bg-slate-50;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
 /* Custom subtle scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
@@ -23,12 +25,12 @@
   background: #94a3b8;
 }
 
-/* Subtle glow and animations */
-@keyframes pulseSubtle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.95; transform: scale(1.02); }
-}
-
-.animate-pulse-subtle {
-  animation: pulseSubtle 3s ease-in-out infinite;
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
