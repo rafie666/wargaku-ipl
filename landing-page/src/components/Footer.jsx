@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, ShieldCheck, Heart, QrCode, Sparkles, CheckCircle2, Code2, Terminal } from 'lucide-react';
+import { Download, ShieldCheck, Heart, QrCode, Sparkles, CheckCircle2, Code2, Terminal, Globe, ExternalLink } from 'lucide-react';
 
 export default function Footer({ onOpenQr }) {
   return (
@@ -26,7 +26,17 @@ export default function Footer({ onOpenQr }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 shrink-0">
+            <a
+              href="/app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-emerald-900/90 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-3 rounded-xl border border-emerald-600/50 transition-all flex items-center gap-1.5 shadow-sm"
+            >
+              <Globe className="w-4 h-4 text-limeAccent" />
+              <span>Demo Web</span>
+              <ExternalLink className="w-3.5 h-3.5 text-emerald-300" />
+            </a>
             <a
               href="/wargaku-ipl.apk"
               download="wargaku-ipl.apk"

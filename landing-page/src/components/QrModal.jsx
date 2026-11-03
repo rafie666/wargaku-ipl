@@ -135,18 +135,29 @@ export default function QrModal({ isOpen, onClose }) {
         </div>
 
         {/* Action button inside modal */}
-        <div className="mt-6 flex gap-3">
-          <a
-            href="/wargaku-ipl.apk"
-            download="wargaku-ipl.apk"
-            className="flex-1 bg-limeAccent hover:bg-[#c2e22f] text-darkForest font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-xs shadow-sm"
-          >
-            <Download className="w-4 h-4 text-darkForest" />
-            <span>Download ke Perangkat</span>
-          </a>
+        <div className="mt-6 flex flex-col gap-2.5">
+          <div className="flex gap-2">
+            <a
+              href="/wargaku-ipl.apk"
+              download="wargaku-ipl.apk"
+              className="flex-1 bg-limeAccent hover:bg-[#c2e22f] text-darkForest font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-xs shadow-sm"
+            >
+              <Download className="w-4 h-4 text-darkForest" />
+              <span>Download APK</span>
+            </a>
+            <a
+              href="/app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-emerald-800 hover:bg-emerald-700 text-white font-bold px-4 py-3 rounded-xl flex items-center justify-center gap-1.5 text-xs shadow-sm"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-limeAccent" />
+              <span>Demo</span>
+            </a>
+          </div>
           <button
             onClick={onClose}
-            className="px-5 py-3 border border-slate-200 text-slate-600 font-semibold rounded-xl text-xs hover:bg-slate-100 transition-colors"
+            className="w-full py-2.5 border border-slate-200 text-slate-600 font-semibold rounded-xl text-xs hover:bg-slate-100 transition-colors"
           >
             Tutup
           </button>

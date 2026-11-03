@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Download, Smartphone, Menu, X, ShieldCheck, ChevronRight } from 'lucide-react';
+import { Download, Smartphone, Menu, X, ShieldCheck, ChevronRight, Globe, ExternalLink } from 'lucide-react';
 
 export default function Navbar({ onOpenQr }) {
   const [scrolled, setScrolled] = useState(false);
@@ -82,13 +82,15 @@ export default function Navbar({ onOpenQr }) {
               href="/app/"
               target="_blank"
               rel="noopener noreferrer"
-              className={`text-xs font-semibold px-3 py-2 rounded-lg border transition-all flex items-center gap-1.5 ${
+              className={`text-xs font-bold px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 shadow-sm active:scale-95 ${
                 scrolled
-                  ? 'border-emerald-600 text-emerald-700 hover:bg-emerald-50'
-                  : 'border-emerald-600/70 text-emerald-200 hover:bg-emerald-900/60'
+                  ? 'bg-emerald-700 hover:bg-emerald-800 text-white'
+                  : 'bg-emerald-800/90 hover:bg-emerald-700 text-white border border-emerald-500/50'
               }`}
             >
-              Demo Web
+              <Globe className="w-3.5 h-3.5 text-limeAccent" />
+              <span>Demo Web</span>
+              <ExternalLink className="w-3 h-3 text-emerald-300" />
             </a>
 
             <button
@@ -117,9 +119,19 @@ export default function Navbar({ onOpenQr }) {
           {/* Mobile Menu Toggle Button */}
           <div className="md:hidden flex items-center gap-2">
             <a
+              href="/app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-emerald-500/60 text-emerald-100 bg-emerald-900/80 hover:bg-emerald-800 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 shadow-sm"
+            >
+              <Globe className="w-3 h-3 text-limeAccent" />
+              <span>Demo</span>
+            </a>
+
+            <a
               href="/wargaku-ipl.apk"
               download="wargaku-ipl.apk"
-              className="bg-limeAccent text-darkForest text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm"
+              className="bg-limeAccent text-darkForest text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm active:scale-95"
             >
               <Download className="w-3.5 h-3.5" />
               APK
@@ -180,9 +192,11 @@ export default function Navbar({ onOpenQr }) {
                 href="/app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-center flex items-center justify-center gap-2 text-sm shadow-sm"
+                className="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-2.5 rounded-xl text-center flex items-center justify-center gap-2 text-sm shadow-sm"
               >
-                Coba Demo Web
+                <Globe className="w-4 h-4 text-limeAccent" />
+                <span>Coba Demo Web</span>
+                <ExternalLink className="w-3.5 h-3.5 text-emerald-300" />
               </a>
               <a
                 href="/wargaku-ipl.apk"

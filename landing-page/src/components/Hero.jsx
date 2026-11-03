@@ -49,7 +49,7 @@ export default function Hero({ onOpenQr }) {
                 </div>
                 <div className="text-left">
                   <div className="text-[10px] font-semibold text-darkForest/80 uppercase tracking-wider">Unduh Sekarang</div>
-                  <div className="text-sm sm:text-base font-black leading-none">Download APK (v2.0)</div>
+                  <div className="text-sm sm:text-base font-black leading-none">Download APK</div>
                 </div>
               </a>
 

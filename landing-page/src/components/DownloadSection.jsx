@@ -82,7 +82,7 @@ export default function DownloadSection({ onOpenQr }) {
               <div className="pt-6 border-t border-emerald-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
                 <div>
                   <div className="text-[11px] text-emerald-300">Status</div>
-                  <div className="text-sm font-bold text-white">Rilis Stabil v2.0</div>
+                  <div className="text-sm font-bold text-white">Rilis Stabil</div>
                 </div>
                 <div>
                   <div className="text-[11px] text-emerald-300">Ukuran APK</div>
